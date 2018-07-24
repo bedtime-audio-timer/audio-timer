@@ -4,25 +4,154 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/halveVol"
-        android:layout_width="138dp"
-        android:layout_height="89dp"
-        android:layout_marginBottom="8dp"
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.36" />
+
+    <TextView
+        android:id="@+id/volumeLabelText"
+        style="@style/LabelText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/VolumeLable"
+        app:layout_constraintBottom_toTopOf="@+id/textVolume"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/timerLabelText"
+        style="@style/LabelText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/TimerLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/textVolume"
+        style="@style/ValueText"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textTimer"
+        style="@style/ValueText"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00:50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerLabelText" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="Volume"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/textVolume"
+        app:srcCompat="@drawable/volume3" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="66dp"
+        android:contentDescription="Timer"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/textTimer"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:srcCompat="@drawable/timer5" />
+
+    <ImageButton
+        android:id="@+id/imgBtnVolumeUp"
+        style="@style/UpArrowButton"
+        android:layout_marginBottom="4dp"
+        android:contentDescription="Increase Volume"
+        android:onClick="increaseVolume"
+        app:layout_constraintBottom_toTopOf="@+id/imgBtnVolumeDown"
+        app:layout_constraintStart_toEndOf="@+id/textVolume"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageButton
+        android:id="@+id/imgBtnVolumeDown"
+        style="@style/DownArrowButton"
+        android:contentDescription="Decrease Volume"
+        android:onClick="decreaseVolume"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/textVolume"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageButton
+        android:id="@+id/imgBtnTimerUp"
+        style="@style/UpArrowButton"
+        android:layout_marginTop="68dp"
+        android:contentDescription="Increase Timer"
+        android:onClick="increaseTimer"
+        app:layout_constraintStart_toEndOf="@+id/textTimer"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageButton
+        android:id="@+id/imgBtnTimerDown"
+        style="@style/DownArrowButton"
+        android:contentDescription="Decrease Timer"
+        android:onClick="decreaseTimer"
+        app:layout_constraintStart_toEndOf="@+id/textTimer"
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnTimerUp"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageButton
+        android:id="@+id/btnStart"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/halveTitle"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#00000000"
+        android:contentDescription="Start Timer"
+        android:onClick="startTimer"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.389" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textTimer"
+        app:srcCompat="@drawable/start4" />
 </android.support.constraint.ConstraintLayout>
