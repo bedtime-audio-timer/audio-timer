@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             oldVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
             targetVol = oldVol/2
             audioManager.setVolume(targetVol)
-            timerWithIntervals(5 , 30, audioManager)
+            mainTimer(5 , 30, audioManager)
         }
 
     }
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun timerWithIntervals(numMinutes: Int, numIntervals: Int, am: AudioManager){
+    private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){
         val intervalLength = findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         for (interval in 1..numIntervals){
             val myToast = Toast.makeText(this, "Interval passed", Toast.LENGTH_SHORT) //delete when audio behavior has
