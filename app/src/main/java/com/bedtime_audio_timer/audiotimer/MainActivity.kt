@@ -101,7 +101,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startTimer(view: View)  {
-        //
+        val audioManager : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        mainTimer(m_minutes, 60, audioManager)
     }
 
     private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){ //AudioManager argument needed for future audio behavior
