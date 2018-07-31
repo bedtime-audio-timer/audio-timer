@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){ //AudioManager argument needed for future audio behavior
-        val intervalLength = findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
+        val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         for (interval in 1..numIntervals){
             val myToast = Toast.makeText(this, "Interval passed", Toast.LENGTH_SHORT) //delete when audio behavior has
                                                                                                     // been defined for this function
@@ -118,11 +118,6 @@ class MainActivity : AppCompatActivity() {
                 myToast.show() //replace this line with desired audio behavior
             }
         }
-    }
-
-    private fun findEqualIntervalsInMilliseconds(numMinutes: Int, numIntervals: Int): Long {
-        val numMilliseconds = TimeUnit.MINUTES.toMillis(numMinutes.toLong())
-        return numMilliseconds/numIntervals.toLong()
     }
 
 }
