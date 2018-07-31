@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.AUDIO_SERVICE
 import android.icu.util.UniversalTimeScale.toLong
 import android.media.AudioManager
+import android.media.AudioManager.STREAM_MUSIC
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -39,15 +40,18 @@ class MainActivity : AppCompatActivity() {
         this.setStreamVolume(
                 AudioManager.STREAM_MUSIC, volumeIndex, AudioManager.FLAG_SHOW_UI
         )
-    } 
+    }
 
     var m_volume: Int = 0
     var m_minutes: Int = 0
 
+    val atMath = AudioTimerMath()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        m_volume = 50
+        val audioManager : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        m_volume = atMath.percentageToMultipleOfFive(atMath.currentVolumeToPercentage(audioManager))
         m_minutes = 30
 
         updateVolume()
@@ -120,4 +124,5 @@ class MainActivity : AppCompatActivity() {
         val numMilliseconds = TimeUnit.MINUTES.toMillis(numMinutes.toLong())
         return numMilliseconds/numIntervals.toLong()
     }
+
 }
