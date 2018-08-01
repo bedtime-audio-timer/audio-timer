@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val audioManager : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        m_volume = atMath.percentageToMultipleOfIncrement(atMath.currentVolumeToPercentage(audioManager), 3) //Change 5 argument when increment variable is introduced in MainActivity
+        m_volume = atMath.percentageToMultipleOfIncrement(atMath.currentVolumeToPercentage(audioManager), 5) //Change 5 argument when increment variable is introduced in MainActivity
         m_minutes = 30
 
         updateVolume()
