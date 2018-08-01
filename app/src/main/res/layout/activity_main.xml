@@ -75,28 +75,26 @@
         app:layout_constraintTop_toBottomOf="@+id/timerLabelText" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgVolume"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="12dp"
         android:contentDescription="Volume"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toStartOf="@+id/textVolume"
-        app:srcCompat="@drawable/volume3" />
+        app:srcCompat="@drawable/volume_med" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginTop="68dp"
         android:contentDescription="Timer"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toStartOf="@+id/textTimer"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:srcCompat="@drawable/timer5" />
+        app:srcCompat="@drawable/timer" />
 
     <ImageButton
         android:id="@+id/imgBtnVolumeUp"
@@ -138,8 +136,8 @@
 
     <ImageButton
         android:id="@+id/btnStart"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -153,5 +151,5 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTimer"
-        app:srcCompat="@drawable/start4" />
+        app:srcCompat="@drawable/start" />
 </android.support.constraint.ConstraintLayout>
