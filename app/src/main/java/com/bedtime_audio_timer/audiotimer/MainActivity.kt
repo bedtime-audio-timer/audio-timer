@@ -13,7 +13,6 @@ import com.bedtime_audio_timer.audiotimer.R
 //import com.bedtime_audio_timer.audiotimer.R.id.halveVol
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.concurrent.schedule
 import android.widget.Toast
 
