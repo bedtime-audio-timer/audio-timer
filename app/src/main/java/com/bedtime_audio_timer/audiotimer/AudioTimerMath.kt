@@ -8,8 +8,12 @@ class AudioTimerMath{
         return 100*am.getStreamVolume(AudioManager.STREAM_MUSIC)/am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
     }
 
-    fun percentageToMultipleOfFive(percentage: Int): Int{
-        return 5*(percentage/5)
+    fun percentageToMultipleOfIncrement(percentage: Int, increment: Int): Int{
+        var roundedPercent = increment*Math.round(percentage.toDouble()/increment.toDouble()) //this rounding results in a Long
+        if (roundedPercent>100){
+            roundedPercent=100
+        }
+        return roundedPercent.toInt()
     }
 
     fun percentageToVolume(percentage: Int, am: AudioManager): Int {
