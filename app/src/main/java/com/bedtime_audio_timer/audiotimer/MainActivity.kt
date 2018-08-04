@@ -8,13 +8,13 @@ import android.media.AudioManager.STREAM_MUSIC
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import android.widget.TextView
 import com.bedtime_audio_timer.audiotimer.R
 //import com.bedtime_audio_timer.audiotimer.R.id.halveVol
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.concurrent.schedule
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
+*/
     private fun AudioManager.setVolume(volumeIndex: Int){
         this.setStreamVolume(
                 AudioManager.STREAM_MUSIC, volumeIndex, AudioManager.FLAG_SHOW_UI
