@@ -225,10 +225,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){ 
         val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
+        val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
+        var nextVolume = startVolume - 1
         for (interval in 1..numIntervals){
             val myToast = Toast.makeText(this, "I changed the volume!", Toast.LENGTH_SHORT) //delete when audio behavior is finalized
-            val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
-            var nextVolume = startVolume - 1
             Timer("interval timer", false).schedule(intervalLength*interval) {
                 myToast.show() //delete when audio behavior is finalized
                 am.setVolume(nextVolume)
