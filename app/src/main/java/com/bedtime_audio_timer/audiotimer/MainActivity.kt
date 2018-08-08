@@ -1,17 +1,11 @@
 package com.bedtime_audio_timer.audiotimer
 
-import android.content.Context
-import android.content.Context.AUDIO_SERVICE
-import android.icu.util.UniversalTimeScale.toLong
 import android.media.AudioManager
-import android.media.AudioManager.STREAM_MUSIC
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import com.bedtime_audio_timer.audiotimer.R
 //import com.bedtime_audio_timer.audiotimer.R.id.halveVol
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.concurrent.schedule
 import android.widget.Toast
@@ -49,8 +43,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val audioManager : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        m_volume = atMath.percentageToMultipleOfIncrement(atMath.currentVolumeToPercentage(audioManager), 5) //Change 5 argument when increment variable is introduced in MainActivity
+        val am : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        m_volume = atMath.percentageToMultipleOfIncrement(atMath.currentVolumeToPercentage(am), 5) //Change 5 argument when increment variable is introduced in MainActivity
         m_minutes = 30
 
         updateVolume()
@@ -104,17 +98,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startTimer(view: View)  {
-        val audioManager : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        mainTimer(m_minutes, 60, audioManager)
+        val am : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        var numIntervals: Int
+        numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(m_volume, am)
+        if (numIntervals < 0) {
+            numIntervals = 0
+        }
+
+        mainTimer(m_minutes, numIntervals, am)
     }
 
     private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){ //AudioManager argument needed for future audio behavior
         val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         for (interval in 1..numIntervals){
-            val myToast = Toast.makeText(this, "Interval passed", Toast.LENGTH_SHORT) //delete when audio behavior has
-                                                                                                    // been defined for this function
+            val myToast = Toast.makeText(this, "I changed the volume!", Toast.LENGTH_SHORT) //delete when audio behavior has
+            val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)                                                                                       // been defined for this function
+            var nextVolume = startVolume - 1
             Timer("interval timer", false).schedule(intervalLength*interval) {
                 myToast.show() //replace this line with desired audio behavior
+                am.setVolume(nextVolume)
+                nextVolume -= 1
             }
         }
     }
