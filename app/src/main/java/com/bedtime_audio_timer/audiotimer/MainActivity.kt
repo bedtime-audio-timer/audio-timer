@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     val atMath = AudioTimerMath()
-  
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -181,12 +181,12 @@ class MainActivity : AppCompatActivity() {
             else -> imgVolume.setImageResource(R.drawable.volume_max)
         }
     }
-     /*   if (m_volume == 0) {
-            imgVolume.setImageResource(R.drawable.mute)
-        } elseif (m_volume > 0) && (m_volume <=25){
-            imgVolume.setImageResource(R.drawable.volume)
+    /*   if (m_volume == 0) {
+           imgVolume.setImageResource(R.drawable.mute)
+       } elseif (m_volume > 0) && (m_volume <=25){
+           imgVolume.setImageResource(R.drawable.volume)
 
-    }*/
+   }*/
 
     fun updateTimer() {
         val hours: Int
@@ -212,18 +212,26 @@ class MainActivity : AppCompatActivity() {
         updateTimer()
     }
 
-    fun startTimer(view: View)  {
-        val am : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        var numIntervals: Int
-        numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(m_volume, am)
-        if (numIntervals < 0) {
-            numIntervals = 0
-        }
+    var timerIsRunning: Boolean = false
 
-        mainTimer(m_minutes, numIntervals, am)
+    fun startTimer(view: View)  { //suggesting this be renamed in the upcoming refactor to reflect fact that it now starts or stops timer (toggleTimer perhaps?)
+        if (timerIsRunning) {
+            val myToast = Toast.makeText(this, "I should cancel", Toast.LENGTH_SHORT)
+            myToast.show() //delete when timer cancellation works.
+        } else {
+            val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+            var numIntervals: Int
+            numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(m_volume, am)
+            if (numIntervals < 0) {
+                numIntervals = 0
+            }
+
+            mainTimer(m_minutes, numIntervals, am)
+        }
+        timerIsRunning = !timerIsRunning
     }
 
-    private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){ 
+    private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){
         val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
         var nextVolume = startVolume - 1
