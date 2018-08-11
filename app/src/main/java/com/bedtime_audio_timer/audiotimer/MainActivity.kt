@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     var m_volume: Int = 0 // Target volume
     var m_minutes: Int = 0 // Target minutes
-
+    var timerIsRunning: Boolean = false
     // timerObjectDelay and timerObjectPeriod for Timer object when UP/DOWN buttons are hold that define its schedule
     public var timerObjectDelay = 150
     public var timerObjectPeriod = 150
@@ -211,8 +211,6 @@ class MainActivity : AppCompatActivity() {
             m_minutes -= minutesIncrement
         updateTimer()
     }
-
-    var timerIsRunning: Boolean = false
 
     fun startTimer(view: View)  { //suggesting this be renamed in the upcoming refactor to reflect fact that it now starts or stops timer (toggleTimer perhaps?)
         if (timerIsRunning) {
