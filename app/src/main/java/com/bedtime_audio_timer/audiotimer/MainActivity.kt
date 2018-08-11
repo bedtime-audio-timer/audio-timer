@@ -218,6 +218,7 @@ class MainActivity : AppCompatActivity() {
         if (timerIsRunning) {
             val myToast = Toast.makeText(this, "I should cancel", Toast.LENGTH_SHORT)
             myToast.show() //delete when timer cancellation works.
+            cancelMainTimer()
         } else {
             val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             var numIntervals: Int
@@ -231,18 +232,25 @@ class MainActivity : AppCompatActivity() {
         timerIsRunning = !timerIsRunning
     }
 
+    var mTimer = Timer("interval timer", false) //refers to the main timer for the application
+
     private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){
         val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
         var nextVolume = startVolume - 1
         for (interval in 1..numIntervals){
             val myToast = Toast.makeText(this, "I changed the volume!", Toast.LENGTH_SHORT) //delete when audio behavior is finalized
-            Timer("interval timer", false).schedule(intervalLength*interval) {
+            mTimer.schedule(intervalLength*interval) {
                 myToast.show() //delete when audio behavior is finalized
                 am.setVolume(nextVolume)
                 nextVolume -= 1
             }
         }
+    }
+
+    private fun cancelMainTimer(){
+        mTimer.cancel()
+        mTimer.purge()
     }
 
 }
