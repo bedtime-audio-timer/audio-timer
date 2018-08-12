@@ -230,12 +230,13 @@ class MainActivity : AppCompatActivity() {
         timerIsRunning = !timerIsRunning
     }
 
-    var mTimer = Timer("interval timer", false) //refers to the main timer for the application
+    var mTimer=Timer("interval timer", false) //refers to the main timer for the application
 
     private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){
         val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
         var nextVolume = startVolume - 1
+
         for (interval in 1..numIntervals){
             val myToast = Toast.makeText(this, "I changed the volume!", Toast.LENGTH_SHORT) //delete when audio behavior is finalized
             mTimer.schedule(intervalLength*interval) {
@@ -247,8 +248,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun cancelMainTimer(){
-        mTimer.cancel()
-        mTimer.purge()
+        mTimer?.cancel()
+        mTimer = Timer("interval timer", false)
     }
 
 }
