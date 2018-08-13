@@ -1,5 +1,6 @@
 package com.bedtime_audio_timer.audiotimer
 
+import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     var m_volume: Int = 0 // Target volume
     var m_minutes: Int = 0 // Target minutes
-
+    var timerIsRunning: Boolean = false
     // timerObjectDelay and timerObjectPeriod for Timer object when UP/DOWN buttons are hold that define its schedule
     public var timerObjectDelay = 150
     public var timerObjectPeriod = 150
@@ -82,6 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     val atMath = AudioTimerMath()
   
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -93,11 +95,27 @@ class MainActivity : AppCompatActivity() {
         else {
             val am : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             m_volume = atMath.percentageToMultipleOfIncrement(atMath.currentVolumeToPercentage(am), 5) //Change 5 argument when increment variable is introduced in MainActivity
-            m_minutes = 30
+            m_minutes = 5
         }
 
         updateVolume()
         updateTimer()
+
+        val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
+
+        imgBtnMain.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                updateTimerButtonImage()
+            } else if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                if (!timerIsRunning) {
+                    imgBtnMain.setImageResource(R.drawable.start_pressed2)
+                } else {
+                    imgBtnMain.setImageResource(R.drawable.stop_pressed2)
+                }
+            }
+            false
+        })
+
 
         val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
         val timerOnTouchListenerVolumeUp = TimerOnTouchListener()
@@ -212,15 +230,30 @@ class MainActivity : AppCompatActivity() {
         updateTimer()
     }
 
-    fun startTimer(view: View)  {
-        val am : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        var numIntervals: Int
-        numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(m_volume, am)
-        if (numIntervals < 0) {
-            numIntervals = 0
+    fun updateTimerButtonImage() {
+        val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
+        if (timerIsRunning) {
+            imgBtnMain.setImageResource(R.drawable.stop)
+        } else {
+            imgBtnMain.setImageResource(R.drawable.start)
         }
+    }
 
-        mainTimer(m_minutes, numIntervals, am)
+    fun startTimer(view: View)  {
+        if (timerIsRunning) {
+
+        } else {
+            val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+            var numIntervals: Int
+            numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(m_volume, am)
+            if (numIntervals < 0) {
+                numIntervals = 0
+            }
+
+            mainTimer(m_minutes, numIntervals, am)
+        }
+        timerIsRunning = !timerIsRunning
+        updateTimerButtonImage()
     }
 
     private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){ 
