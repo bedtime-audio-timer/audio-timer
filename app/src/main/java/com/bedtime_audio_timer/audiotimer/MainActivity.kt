@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     var m_volume: Int = 0 // Target volume
     var m_minutes: Int = 0 // Target minutes
-
+    var timerIsRunning: Boolean = false
     // timerObjectDelay and timerObjectPeriod for Timer object when UP/DOWN buttons are hold that define its schedule
     public var timerObjectDelay = 150
     public var timerObjectPeriod = 150
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     val atMath = AudioTimerMath()
-  
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -181,12 +181,12 @@ class MainActivity : AppCompatActivity() {
             else -> imgVolume.setImageResource(R.drawable.volume_max)
         }
     }
-     /*   if (m_volume == 0) {
-            imgVolume.setImageResource(R.drawable.mute)
-        } elseif (m_volume > 0) && (m_volume <=25){
-            imgVolume.setImageResource(R.drawable.volume)
+    /*   if (m_volume == 0) {
+           imgVolume.setImageResource(R.drawable.mute)
+       } elseif (m_volume > 0) && (m_volume <=25){
+           imgVolume.setImageResource(R.drawable.volume)
 
-    }*/
+   }*/
 
     fun updateTimer() {
         val hours: Int
@@ -212,29 +212,44 @@ class MainActivity : AppCompatActivity() {
         updateTimer()
     }
 
-    fun startTimer(view: View)  {
-        val am : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        var numIntervals: Int
-        numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(m_volume, am)
-        if (numIntervals < 0) {
-            numIntervals = 0
-        }
+    fun startTimer(view: View)  { //suggesting this be renamed in the upcoming refactor to reflect fact that it now starts or stops timer (toggleTimer perhaps?)
+        if (timerIsRunning) {
+            val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
+            myToast.show() //delete this Toast when interface makes cancellation clear.
+            cancelMainTimer()
+        } else {
+            val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+            var numIntervals: Int
+            numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(m_volume, am)
+            if (numIntervals < 0) {
+                numIntervals = 0
+            }
 
-        mainTimer(m_minutes, numIntervals, am)
+            mainTimer(m_minutes, numIntervals, am)
+        }
+        timerIsRunning = !timerIsRunning
     }
 
-    private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){ 
+    var mTimer=Timer("interval timer", false) //refers to the main timer for the application
+
+    private fun mainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){
         val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
         var nextVolume = startVolume - 1
+
         for (interval in 1..numIntervals){
             val myToast = Toast.makeText(this, "I changed the volume!", Toast.LENGTH_SHORT) //delete when audio behavior is finalized
-            Timer("interval timer", false).schedule(intervalLength*interval) {
+            mTimer.schedule(intervalLength*interval) {
                 myToast.show() //delete when audio behavior is finalized
                 am.setVolume(nextVolume)
                 nextVolume -= 1
             }
         }
+    }
+
+    private fun cancelMainTimer(){
+        mTimer?.cancel()
+        mTimer = Timer("interval timer", false)
     }
 
 }

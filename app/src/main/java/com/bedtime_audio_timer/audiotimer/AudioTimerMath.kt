@@ -22,7 +22,7 @@ class AudioTimerMath{
 
     fun findEqualIntervalsInMilliseconds(numMinutes: Int, numIntervals: Int): Long {
         val numMilliseconds = TimeUnit.MINUTES.toMillis(numMinutes.toLong())
-        return numMilliseconds/numIntervals.toLong()
+        return if (numIntervals==0) numMilliseconds else numMilliseconds/numIntervals.toLong()
     }
 
 }
