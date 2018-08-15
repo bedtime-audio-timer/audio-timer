@@ -1,5 +1,6 @@
 package com.bedtime_audio_timer.audiotimer
 
+import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -82,6 +83,8 @@ class MainActivity : AppCompatActivity() {
 
     val atMath = AudioTimerMath()
 
+    @SuppressLint("ClickableViewAccessibility")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -93,11 +96,27 @@ class MainActivity : AppCompatActivity() {
         else {
             val am : AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             m_volume = atMath.percentageToMultipleOfIncrement(atMath.currentVolumeToPercentage(am), 5) //Change 5 argument when increment variable is introduced in MainActivity
-            m_minutes = 30
+            m_minutes = 5
         }
 
         updateVolume()
         updateTimer()
+
+        val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
+
+        imgBtnMain.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                updateTimerButtonImage()
+            } else if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                if (!timerIsRunning) {
+                    imgBtnMain.setImageResource(R.drawable.start_pressed2)
+                } else {
+                    imgBtnMain.setImageResource(R.drawable.stop_pressed2)
+                }
+            }
+            false
+        })
+
 
         val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
         val timerOnTouchListenerVolumeUp = TimerOnTouchListener()
@@ -212,6 +231,15 @@ class MainActivity : AppCompatActivity() {
         updateTimer()
     }
 
+    fun updateTimerButtonImage() {
+        val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
+        if (timerIsRunning) {
+            imgBtnMain.setImageResource(R.drawable.stop)
+        } else {
+            imgBtnMain.setImageResource(R.drawable.start)
+        }
+    }
+
     fun startTimer(view: View)  { //suggesting this be renamed in the upcoming refactor to reflect fact that it now starts or stops timer (toggleTimer perhaps?)
         if (timerIsRunning) {
             val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
@@ -228,6 +256,7 @@ class MainActivity : AppCompatActivity() {
             mainTimer(m_minutes, numIntervals, am)
         }
         timerIsRunning = !timerIsRunning
+        updateTimerButtonImage()
     }
 
     var mTimer=Timer("interval timer", false) //refers to the main timer for the application

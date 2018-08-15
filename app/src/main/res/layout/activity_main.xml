@@ -135,7 +135,7 @@
         app:srcCompat="@android:drawable/arrow_down_float" />
 
     <ImageButton
-        android:id="@+id/btnStart"
+        android:id="@+id/btnMain"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginEnd="8dp"
@@ -144,7 +144,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="#00000000"
-        android:contentDescription="Start Timer"
+        android:contentDescription="Start/Stop Timer"
         android:onClick="startTimer"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
