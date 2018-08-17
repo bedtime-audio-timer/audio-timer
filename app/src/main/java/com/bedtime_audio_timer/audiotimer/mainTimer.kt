@@ -7,8 +7,6 @@ import kotlin.concurrent.schedule
 
 class mainTimer {
 
-    val atMath = AudioTimerMath()
-
     var mTimer= Timer("interval timer", false) //refers to the main timer for the application
 
     fun startMainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){

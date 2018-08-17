@@ -64,8 +64,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    val atMath = AudioTimerMath()
-
     @SuppressLint("ClickableViewAccessibility")
 
     override fun onCreate(savedInstanceState: Bundle?) {

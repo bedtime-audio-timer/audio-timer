@@ -1,5 +1,6 @@
 package com.bedtime_audio_timer.audiotimer
 
+val atMath = AudioTimerMath()
 public var m_volume: Int = 0 // Target volume
 public var m_minutes: Int = 0 // Target minutes
 public var timerIsRunning: Boolean = false
