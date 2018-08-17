@@ -261,7 +261,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun cancelMainTimer(){
-        mTimer?.cancel()
+        mTimer?.cancel() //the ? is the safe call operator in Kotlin
         mTimer = Timer("interval timer", false)
     }
 
