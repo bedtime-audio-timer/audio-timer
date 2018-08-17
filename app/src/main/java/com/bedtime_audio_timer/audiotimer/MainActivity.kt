@@ -190,12 +190,6 @@ class MainActivity : AppCompatActivity() {
             else -> imgVolume.setImageResource(R.drawable.volume_max)
         }
     }
-    /*   if (m_volume == 0) {
-           imgVolume.setImageResource(R.drawable.mute)
-       } elseif (m_volume > 0) && (m_volume <=25){
-           imgVolume.setImageResource(R.drawable.volume)
-
-   }*/
 
     fun updateTimer() {
         val hours: Int
