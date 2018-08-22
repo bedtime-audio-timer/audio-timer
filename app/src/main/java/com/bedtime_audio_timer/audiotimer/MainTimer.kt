@@ -1,13 +1,22 @@
 package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
-import android.widget.Toast
 import java.util.*
 import kotlin.concurrent.schedule
 
-class mainTimer {
+class MainTimer {
 
-    var mTimer= Timer("interval timer", false) //refers to the main timer for the application
+    private var timerIsRunning: Boolean = false
+
+    var timer= Timer("interval timer", false) //refers to the main timer for the application
+
+    fun getTimerIsRunning(): Boolean {
+        return timerIsRunning
+    }
+
+    fun setTimerIsRunning(isRunning: Boolean) {
+        timerIsRunning=isRunning
+    }
 
     fun startMainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){
         val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
@@ -15,7 +24,7 @@ class mainTimer {
         var nextVolume = startVolume - 1
 
         for (interval in 1..numIntervals){
-            mTimer.schedule(intervalLength*interval) {
+            timer.schedule(intervalLength*interval) {
                 am.setVolume(nextVolume)
                 nextVolume -= 1
             }
@@ -23,7 +32,7 @@ class mainTimer {
     }
 
     fun cancelMainTimer(){
-        mTimer?.cancel() //the ? is the safe call operator in Kotlin
-        mTimer = Timer("interval timer", false)
+        timer?.cancel() //the ? is the safe call operator in Kotlin
+        timer = Timer("interval timer", false)
     }
 }

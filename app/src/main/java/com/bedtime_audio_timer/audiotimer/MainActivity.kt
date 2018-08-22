@@ -15,7 +15,7 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
-    var mTimer = mainTimer()
+    var mTimer = MainTimer()
 
     private var timer: Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
     private lateinit var timerTask: TimerTask
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 updateTimerButtonImage()
             } else if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                if (!timerIsRunning) {
+                if (!mTimer.getTimerIsRunning()) {
                     imgBtnMain.setImageResource(R.drawable.start_pressed2)
                 } else {
                     imgBtnMain.setImageResource(R.drawable.stop_pressed2)
@@ -208,7 +208,7 @@ class MainActivity : AppCompatActivity() {
 
     fun updateTimerButtonImage() {
         val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
-        if (timerIsRunning) {
+        if (mTimer.getTimerIsRunning()) {
             imgBtnMain.setImageResource(R.drawable.stop)
         } else {
             imgBtnMain.setImageResource(R.drawable.start)
@@ -216,7 +216,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun toggleTimer(view: View)  { //suggesting this be renamed in the upcoming refactor to reflect fact that it now starts or stops timer (toggleTimer perhaps?)
-        if (timerIsRunning) {
+        if (mTimer.getTimerIsRunning()) {
             val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
             myToast.show() //delete this Toast when interface makes cancellation clear.
             mTimer.cancelMainTimer()
@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity() {
 
             mTimer.startMainTimer(m_minutes, numIntervals, am)
         }
-        timerIsRunning = !timerIsRunning
+        mTimer.setTimerIsRunning(!mTimer.getTimerIsRunning())
         updateTimerButtonImage()
     }
 
