@@ -119,8 +119,8 @@
         android:id="@+id/imgBtnTimerUp"
         style="@style/UpArrowButton"
         android:layout_marginTop="68dp"
-        android:contentDescription="Increase Timer"
-        android:onClick="increaseTimer"
+        android:contentDescription="Increase Minutes"
+        android:onClick="increaseMinutes"
         app:layout_constraintStart_toEndOf="@+id/textTimer"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         app:srcCompat="@android:drawable/arrow_up_float" />
@@ -128,8 +128,8 @@
     <ImageButton
         android:id="@+id/imgBtnTimerDown"
         style="@style/DownArrowButton"
-        android:contentDescription="Decrease Timer"
-        android:onClick="decreaseTimer"
+        android:contentDescription="Decrease Minutes"
+        android:onClick="decreaseMinutes"
         app:layout_constraintStart_toEndOf="@+id/textTimer"
         app:layout_constraintTop_toBottomOf="@+id/imgBtnTimerUp"
         app:srcCompat="@android:drawable/arrow_down_float" />
