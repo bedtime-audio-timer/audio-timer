@@ -218,13 +218,7 @@ class MainActivity : AppCompatActivity() {
        //     timerParams.loadInitialSetting(getSystemService(AppCompatActivity.AUDIO_SERVICE) as AudioManager)
         } else {
             val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-            var numIntervals: Int
-            numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(timerParams.getVolume(), am)
-            if (numIntervals < 0) {
-                numIntervals = 0
-            }
-
-            mTimer.startMainTimer(timerParams.getMinutes(), numIntervals, am)
+            mTimer.startMainTimer(timerParams, am)
         }
         mTimer.setTimerIsRunning(!mTimer.getTimerIsRunning())
         updateTimerButtonImage()

@@ -20,6 +20,15 @@ class AudioTimerMath{
         return percentage*am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)/100
     }
 
+    fun findNumIntervals(am: AudioManager, timerParams: TimerParameters): Int {
+        var numIntervals: Int
+        numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(timerParams.getVolume(), am)
+        if (numIntervals < 0) {
+            numIntervals = 0
+        }
+        return numIntervals
+    }
+
     fun findEqualIntervalsInMilliseconds(numMinutes: Int, numIntervals: Int): Long {
         val numMilliseconds = TimeUnit.MINUTES.toMillis(numMinutes.toLong())
         return if (numIntervals==0) numMilliseconds else numMilliseconds/numIntervals.toLong()

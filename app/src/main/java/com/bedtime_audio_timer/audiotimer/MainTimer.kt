@@ -18,11 +18,12 @@ class MainTimer {
         timerIsRunning=isRunning
     }
 
-    fun startMainTimer(numMinutes: Int, numIntervals: Int, am: AudioManager){
+    fun startMainTimer(timerParams: TimerParameters, am: AudioManager){
+        val numIntervals: Int = atMath.findNumIntervals(am, timerParams)
+        val numMinutes=timerParams.getMinutes()
         val intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
         var nextVolume = startVolume - 1
-
         for (interval in 1..numIntervals){
             timer.schedule(intervalLength*interval) {
                 am.setVolume(nextVolume)
