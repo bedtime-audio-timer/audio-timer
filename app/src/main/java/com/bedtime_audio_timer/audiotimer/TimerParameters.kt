@@ -50,7 +50,6 @@ class TimerParameters {
         if (volume < 0) {
             volume = 0
         }
-
     }
 
     fun increaseMinutes() {

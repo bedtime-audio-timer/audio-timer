@@ -14,9 +14,9 @@ import java.util.*
 import android.widget.Toast
 import com.bedtime_audio_timer.audiotimer.R.drawable.volume
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
 
-    var mTimer = MainTimer()
+    private var mTimer: MainTimer? = null
 
     private var timer: Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
     private lateinit var timerTask: TimerTask
@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mTimer = (application as AudioTimerApplication).getTimer()
 
         if (savedInstanceState != null) {
             timerParams.loadFromBundle(savedInstanceState)
@@ -82,6 +83,7 @@ class MainActivity : AppCompatActivity() {
 
         updateVolumeTextView()
         updateMinutesTextView()
+        updateTimerButtonImage()
 
         val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
 
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 updateTimerButtonImage()
             } else if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                if (!mTimer.getTimerIsRunning()) {
+                if (!mTimer?.isRunning()!!) {
                     imgBtnMain.setImageResource(R.drawable.start_pressed2)
                 } else {
                     imgBtnMain.setImageResource(R.drawable.stop_pressed2)
@@ -203,7 +205,7 @@ class MainActivity : AppCompatActivity() {
 
     fun updateTimerButtonImage() {
         val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
-        if (mTimer.getTimerIsRunning()) {
+        if (mTimer?.isRunning()!!) {
             imgBtnMain.setImageResource(R.drawable.stop)
         } else {
             imgBtnMain.setImageResource(R.drawable.start)
@@ -211,11 +213,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun toggleTimer(view: View)  { //suggesting this be renamed in the upcoming refactor to reflect fact that it now starts or stops timer (toggleTimer perhaps?)
-        if (mTimer.getTimerIsRunning()) {
+        if (mTimer?.isRunning()!!) {
             val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
             myToast.show() //delete this Toast when interface makes cancellation clear.
-            mTimer.cancelMainTimer()
-       //     timerParams.loadInitialSetting(getSystemService(AppCompatActivity.AUDIO_SERVICE) as AudioManager)
+            mTimer?.cancelMainTimer()
         } else {
             val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             var numIntervals: Int
@@ -224,10 +225,31 @@ class MainActivity : AppCompatActivity() {
                 numIntervals = 0
             }
 
-            mTimer.startMainTimer(timerParams.getMinutes(), numIntervals, am)
+            mTimer?.startMainTimer(timerParams.getMinutes(), numIntervals, am, this)
         }
-        mTimer.setTimerIsRunning(!mTimer.getTimerIsRunning())
         updateTimerButtonImage()
     }
 
+    override fun onTimerFinished(){
+        handler.post(object: Runnable{
+            override fun run(){
+                val myToast = Toast.makeText(this@MainActivity, "Timer is finished!", Toast.LENGTH_SHORT)
+                myToast.show() //delete this Toast when interface another message about finished timer pops up.
+                updateTimerButtonImage()
+            }
+        })
+    }
+
+    override fun onVolumeChange(){
+        val curVolume = atMath.currentVolumeToPercentage(getSystemService(AUDIO_SERVICE) as AudioManager)
+
+        handler.post(object: Runnable{
+                override fun run(){
+                    val myToast = Toast.makeText(this@MainActivity, "Current volume: $curVolume%", Toast.LENGTH_SHORT)
+                    myToast.show() //delete this Toast when interface is updated with current state.
+            }
+        })
+
+
+    }
 }
