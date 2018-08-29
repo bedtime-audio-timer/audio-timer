@@ -22,11 +22,11 @@ class MainTimer {
     }
 
     fun startMainTimer(timerParams: TimerParameters, am: AudioManager, cb: TimerCallback){
-        val numIntervals: Int = atMath.findNumIntervals(am, timerParams)
+        val numIntervals: Int = AudioTimerMath.findNumIntervals(am, timerParams)
         val numMinutes=timerParams.getMinutes()
         timer = Timer("interval timer", false)
 
-        var intervalLength = atMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
+        var intervalLength = AudioTimerMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
         var nextVolume = startVolume - 1
         var interval = 1

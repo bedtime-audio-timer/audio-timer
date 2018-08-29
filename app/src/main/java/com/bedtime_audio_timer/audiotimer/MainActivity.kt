@@ -220,7 +220,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         } else {
             val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             var numIntervals: Int
-            numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - atMath.percentageToVolume(timerParams.getVolume(), am)
+            numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume(), am)
             if (numIntervals < 0) {
                 numIntervals = 0
             }
@@ -241,7 +241,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
     }
 
     override fun onVolumeChange(){
-        val curVolume = atMath.currentVolumeToPercentage(getSystemService(AUDIO_SERVICE) as AudioManager)
+        val curVolume = AudioTimerMath.currentVolumeToPercentage(getSystemService(AUDIO_SERVICE) as AudioManager)
 
         handler.post(object: Runnable{
                 override fun run(){
@@ -249,7 +249,5 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
                     myToast.show() //delete this Toast when interface is updated with current state.
             }
         })
-
-
     }
 }
