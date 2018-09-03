@@ -1,6 +1,7 @@
 package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
+import com.bedtime_audio_timer.audiotimer.AudioManagerSingleton.Companion.am
 import com.bedtime_audio_timer.audiotimer.R.drawable.timer
 import java.util.*
 import java.util.function.ToLongFunction
@@ -21,13 +22,13 @@ class MainTimer {
         return (timer != null);
     }
 
-    fun startMainTimer(timerParams: TimerParameters, am: AudioManager, cb: TimerCallback){
-        val numIntervals: Int = AudioTimerMath.findNumIntervals(am, timerParams)
+    fun startMainTimer(timerParams: TimerParameters, cb: TimerCallback){
+        val numIntervals: Int = AudioTimerMath.findNumIntervals(timerParams)
         val numMinutes=timerParams.getMinutes()
         timer = Timer("interval timer", false)
 
         var intervalLength = AudioTimerMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
-        val startVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val startVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
         var nextVolume = startVolume - 1
         var interval = 1
 
@@ -41,7 +42,7 @@ class MainTimer {
 */
         timer?.schedule(object : TimerTask() {
                 override fun run() {
-                    am.setVolume(nextVolume)
+                    AudioManagerSingleton.am.setVolume(nextVolume)
                     cb.onVolumeChange();
                     nextVolume -= 1
                     interval += 1

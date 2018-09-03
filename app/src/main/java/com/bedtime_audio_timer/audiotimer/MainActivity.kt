@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import java.util.*
 import android.widget.Toast
+import com.bedtime_audio_timer.audiotimer.AudioManagerSingleton.Companion.am
 import com.bedtime_audio_timer.audiotimer.R.drawable.volume
 
 class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
@@ -220,12 +221,12 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         } else {
             val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             var numIntervals: Int
-            numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume(), am)
+            numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
             if (numIntervals < 0) {
                 numIntervals = 0
             }
 
-            mTimer?.startMainTimer(timerParams, am, this)
+            mTimer?.startMainTimer(timerParams, this)
         }
         updateTimerButtonImage()
     }
@@ -241,7 +242,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
     }
 
     override fun onVolumeChange(){
-        val curVolume = AudioTimerMath.currentVolumeToPercentage(getSystemService(AUDIO_SERVICE) as AudioManager)
+        val curVolume = AudioTimerMath.currentVolumeToPercentage()
 
         handler.post(object: Runnable{
                 override fun run(){

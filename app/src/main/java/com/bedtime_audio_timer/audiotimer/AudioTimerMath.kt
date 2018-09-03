@@ -1,12 +1,13 @@
 package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
+import com.bedtime_audio_timer.audiotimer.AudioManagerSingleton.Companion.am
 import java.util.concurrent.TimeUnit
 
 class AudioTimerMath{
     companion object {
-        fun currentVolumeToPercentage(am: AudioManager): Int {
-            return 100*am.getStreamVolume(AudioManager.STREAM_MUSIC)/am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        fun currentVolumeToPercentage(): Int {
+            return 100*AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)/AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         }
 
         fun percentageToMultipleOfIncrement(percentage: Int, increment: Int): Int{
@@ -17,13 +18,13 @@ class AudioTimerMath{
             return roundedPercent.toInt()
         }
 
-        fun percentageToVolume(percentage: Int, am: AudioManager): Int {
-            return percentage*am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)/100
+        fun percentageToVolume(percentage: Int): Int {
+            return percentage*AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)/100
         }
 
-        fun findNumIntervals(am: AudioManager, timerParams: TimerParameters): Int {
+        fun findNumIntervals(timerParams: TimerParameters): Int {
             var numIntervals: Int
-            numIntervals = am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume(), am)
+            numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
             if (numIntervals < 0) {
                 numIntervals = 0
             }
