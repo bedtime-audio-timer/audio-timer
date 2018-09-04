@@ -7,13 +7,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import java.util.*
-import android.widget.Toast
 import com.bedtime_audio_timer.audiotimer.AudioManagerSingleton.Companion.am
 import com.bedtime_audio_timer.audiotimer.R.drawable.volume
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
 
@@ -121,6 +119,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         val timerOnTouchListenerTimerDown = TimerOnTouchListener()
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
         viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
+
+        val volSlider: SeekBar=volSeekBar
+        volSlider.setMax(am.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+        volSlider.setProgress(am.getStreamVolume(AudioManager.STREAM_MUSIC))
 
     }
 
