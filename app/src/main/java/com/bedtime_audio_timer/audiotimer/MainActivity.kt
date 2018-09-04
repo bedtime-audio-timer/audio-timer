@@ -120,9 +120,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
         viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
 
-        val volSlider: SeekBar=volSeekBar
-        volSlider.setMax(AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
-        volSlider.setProgress(AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC))
+        VolumeSlider.resetValues(volSeekBar)
 
     }
 
