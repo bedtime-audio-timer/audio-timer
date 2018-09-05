@@ -5,29 +5,29 @@ import android.widget.SeekBar
 
 class VolumeSlider{
     companion object {
-        lateinit var volSeekBar: SeekBar
+        lateinit var targetVolSeekBar: SeekBar
         var currentVolume: Int = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 
         fun resetValues(volSlider: SeekBar){
             currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
-            volSeekBar = volSlider
+            targetVolSeekBar = volSlider
 
-            volSeekBar.setMax(AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+            targetVolSeekBar.setMax(AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
 
-            volSeekBar.setProgress(currentVolume)
+            targetVolSeekBar.setProgress(currentVolume)
 
-            volSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
                     if (volSeekBar.getProgress()>currentVolume){
                         volSeekBar.setProgress(currentVolume)
                     }
                 }
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
-                    // Do something
+                    //Even though this is currently empty, removing it causes a Kotlin error in this file
                 }
 
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    //volSeekBar.setProgress(maxOf(volSeekBar.getProgress(), currentVolume))
+                    //Even though this is currently empty, removing it causes a Kotlin error in this file
                 }
             })
         }

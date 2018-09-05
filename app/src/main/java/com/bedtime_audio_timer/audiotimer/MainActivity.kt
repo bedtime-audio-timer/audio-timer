@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
         viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
 
-        VolumeSlider.resetValues(volSeekBar)
+        VolumeSlider.resetValues(targetVolSeekBar)
 
     }
 
