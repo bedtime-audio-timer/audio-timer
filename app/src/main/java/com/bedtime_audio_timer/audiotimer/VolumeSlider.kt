@@ -19,7 +19,6 @@ class VolumeSlider{
             volSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
                     if (volSeekBar.getProgress()>currentVolume){
-                        volSeekBar.setBackgroundColor(28)
                         volSeekBar.setProgress(currentVolume)
                     }
                 }
