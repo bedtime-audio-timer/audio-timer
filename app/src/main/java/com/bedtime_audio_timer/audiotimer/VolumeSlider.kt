@@ -6,27 +6,35 @@ import android.widget.SeekBar
 class VolumeSlider{
     companion object {
         lateinit var targetVolSeekBar: SeekBar
-        var currentVolume: Int = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
+        fun changeVolumeSliderToCurrent(slider: SeekBar){
+            slider.setProgress(AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC))
+        }
+
+        fun setVolumeSliderMax(slider: SeekBar){
+            slider.setMax(AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+        }
+
+        fun capVolume(slider: SeekBar){
+            if (slider.getProgress()>AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)){
+                changeVolumeSliderToCurrent(slider)
+            }
+        }
 
         fun resetValues(volSlider: SeekBar){
-            currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
+
             targetVolSeekBar = volSlider
-
-            targetVolSeekBar.setMax(AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
-
-            targetVolSeekBar.setProgress(currentVolume)
+            setVolumeSliderMax(targetVolSeekBar)
+            changeVolumeSliderToCurrent(targetVolSeekBar)
 
             targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
-                    if (volSeekBar.getProgress()>currentVolume){
-                        volSeekBar.setProgress(currentVolume)
-                    }
+                    capVolume(targetVolSeekBar)
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                override fun onStartTrackingTouch(volSeekBar: SeekBar) {
                     //Even though this is currently empty, removing it causes a Kotlin error in this file
                 }
 
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                override fun onStopTrackingTouch(volSeekBar: SeekBar) {
                     //Even though this is currently empty, removing it causes a Kotlin error in this file
                 }
             })
