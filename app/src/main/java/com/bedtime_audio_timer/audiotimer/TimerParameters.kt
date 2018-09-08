@@ -65,5 +65,8 @@ class TimerParameters {
         }
     }
 
+    fun setVolume(vol: Int){
+        volume=vol
+    }
 
 }
