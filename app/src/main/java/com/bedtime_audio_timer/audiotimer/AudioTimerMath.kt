@@ -24,7 +24,7 @@ class AudioTimerMath{
 
         fun findNumIntervals(timerParams: TimerParameters): Int {
             var numIntervals: Int
-            numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
+            numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - timerParams.getVolume()
             if (numIntervals < 0) {
                 numIntervals = 0
             }

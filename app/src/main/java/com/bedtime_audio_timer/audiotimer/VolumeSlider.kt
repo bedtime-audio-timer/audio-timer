@@ -20,7 +20,7 @@ class VolumeSlider{
             }
         }
 
-        fun resetValues(volSlider: SeekBar){
+        fun resetValues(volSlider: SeekBar, timerParams: TimerParameters){
 
             targetVolSeekBar = volSlider
             setVolumeSliderMax(targetVolSeekBar)
@@ -29,6 +29,7 @@ class VolumeSlider{
             targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
                     capVolume(targetVolSeekBar)
+                    timerParams.setVolume(volSeekBar.getProgress())
                 }
                 override fun onStartTrackingTouch(volSeekBar: SeekBar) {
                     //Even though this is currently empty, removing it causes a Kotlin error in this file
