@@ -11,7 +11,7 @@ class TimerParameters {
     private var minutes: Int = 0
 
     fun loadInitialSetting(am : AudioManager){ // now it show current volume, but later presets can be loaded from file
-        volume = AudioTimerMath.percentageToMultipleOfIncrement(AudioTimerMath.currentVolumeToPercentage(), volumeIncrement)
+        volume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
         minutes = 5
     }
 
@@ -35,11 +35,12 @@ class TimerParameters {
     }
 
     fun increaseVolume(){
-        if (volume < 100){
+        var maxVol: Int = AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        if (volume < maxVol){
             volume  += volumeIncrement
         }
-        if (volume > 100){
-            volume  = 100
+        if (volume > maxVol){
+            volume  = maxVol
         }
     }
 

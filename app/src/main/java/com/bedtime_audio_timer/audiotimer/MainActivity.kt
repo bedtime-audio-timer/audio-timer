@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
 
     fun updateVolumeTextView() {
         val showVolumeTextView = findViewById(R.id.textVolume) as TextView
-        showVolumeTextView.text = (String.format("%3d", timerParams.getVolume()) + "%")
+        showVolumeTextView.text = (String.format("%3d", timerParams.getVolume()))
 
         val imgVolume = findViewById(R.id.imgVolume) as ImageView
 
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         } else {
             val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             var numIntervals: Int
-            numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
+            numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
             if (numIntervals < 0) {
                 numIntervals = 0
             }
@@ -242,11 +242,11 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
     }
 
     override fun onVolumeChange(){
-        val curVolume = AudioTimerMath.currentVolumeToPercentage()
+        val curVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 
         handler.post(object: Runnable{
                 override fun run(){
-                    val myToast = Toast.makeText(this@MainActivity, "Current volume: $curVolume%", Toast.LENGTH_SHORT)
+                    val myToast = Toast.makeText(this@MainActivity, "Current volume: $curVolume", Toast.LENGTH_SHORT)
                     myToast.show() //delete this Toast when interface is updated with current state.
             }
         })
