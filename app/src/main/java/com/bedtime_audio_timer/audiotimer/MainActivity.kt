@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
                 timerParams.decreaseMinutes()
 
             if (buttonAction == ButtonAction.VOLUME_UP || buttonAction == ButtonAction.VOLUME_DOWN)
-                updateVolumeTextView()
+                //updateVolumeTextView()
             else
                 updateMinutesTextView()
         }
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
             timerParams.loadInitialSetting(getSystemService(AppCompatActivity.AUDIO_SERVICE) as AudioManager)
         }
 
-        updateVolumeTextView()
+        //updateVolumeTextView()
         updateMinutesTextView()
         updateTimerButtonImage()
 
@@ -120,7 +120,8 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
         viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
 
-        VolumeSlider.resetValues(targetVolSeekBar, timerParams)
+        val imgVolume = findViewById(R.id.imgVolume) as ImageView
+        VolumeSlider.resetValues(targetVolSeekBar, timerParams, imgVolume)
 
     }
 
@@ -160,15 +161,15 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
 
     fun increaseVolume(view: View?){
         timerParams.increaseVolume()
-        updateVolumeTextView()
+        //updateVolumeTextView()
     }
 
     fun decreaseVolume(view: View?) {
         timerParams.decreaseVolume()
-        updateVolumeTextView()
+        //updateVolumeTextView()
     }
 
-    fun updateVolumeTextView() {
+    /*fun updateVolumeTextView() {
         val showVolumeTextView = findViewById(R.id.textVolume) as TextView
         showVolumeTextView.text = (String.format("%3d", timerParams.getVolume()))
 
@@ -180,7 +181,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
             in 26..50 -> imgVolume.setImageResource(R.drawable.volume_med)
             else -> imgVolume.setImageResource(R.drawable.volume_max)
         }
-    }
+    }*/
 
     fun updateMinutesTextView() {
         val hours: Int
