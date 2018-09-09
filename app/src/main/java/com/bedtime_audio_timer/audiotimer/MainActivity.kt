@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         })
 
 
-        val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
+        /*val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
         val timerOnTouchListenerVolumeUp = TimerOnTouchListener()
         timerOnTouchListenerVolumeUp.buttonAction = ButtonAction.VOLUME_UP
         viewVolumeUp.setOnTouchListener(timerOnTouchListenerVolumeUp)
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         val viewTimerDown = findViewById<View>(R.id.imgBtnTimerDown) as View
         val timerOnTouchListenerTimerDown = TimerOnTouchListener()
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
-        viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
+        viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)*/
 
         val imgVolume = findViewById(R.id.imgVolume) as ImageView
         VolumeSlider.resetValues(targetVolSeekBar, timerParams, imgVolume)
@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         }
     }
 
-    fun increaseVolume(view: View?){
+    /*fun increaseVolume(view: View?){
         timerParams.increaseVolume()
         //updateVolumeTextView()
     }
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
     fun decreaseVolume(view: View?) {
         timerParams.decreaseVolume()
         //updateVolumeTextView()
-    }
+    }*/
 
     /*fun updateVolumeTextView() {
         val showVolumeTextView = findViewById(R.id.textVolume) as TextView

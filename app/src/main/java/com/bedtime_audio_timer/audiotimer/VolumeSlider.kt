@@ -3,13 +3,6 @@ package com.bedtime_audio_timer.audiotimer
 import android.media.AudioManager
 import android.widget.ImageView
 import android.widget.SeekBar
-import kotlinx.android.synthetic.main.activity_main.*
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.widget.*
-import android.view.View
-import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 
