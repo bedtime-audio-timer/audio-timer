@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
 
     }
 
-    // class for listeners when a button is hold
+/*    // class for listeners when a button is hold
     internal inner class TimerOnTouchListener : View.OnTouchListener {
 
         var buttonAction: ButtonAction = ButtonAction.VOLUME_UP
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
             }
             return false
         }
-    }
+    }*/
 
     @SuppressLint("ClickableViewAccessibility")
 
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)*/
 
         val imgVolume = findViewById(R.id.imgVolume) as ImageView
-        VolumeSlider.resetValues(targetVolSeekBar, timerParams, imgVolume)
+        VolumeSlider.resetValues(targetVolSeekBar, greyedVolseekBar, timerParams, imgVolume)
 
     }
 

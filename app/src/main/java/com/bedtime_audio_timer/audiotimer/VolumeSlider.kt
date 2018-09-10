@@ -12,6 +12,7 @@ class VolumeSlider{
         var maxVol = AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 
         lateinit var imgVolume: ImageView
+        lateinit var greyedVolSeekBar: SeekBar
 
         fun updateVolumeImage(timerParams: TimerParameters) {
 
@@ -38,11 +39,14 @@ class VolumeSlider{
             }
         }
 
-        fun resetValues(volSlider: SeekBar, timerParams: TimerParameters, volImage: ImageView){
+        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, timerParams: TimerParameters, volImage: ImageView){
             imgVolume = volImage
             targetVolSeekBar = volSlider
+            greyedVolSeekBar = greyedSlider
             setVolumeSliderMax(targetVolSeekBar)
             changeVolumeSliderToCurrent(targetVolSeekBar)
+            setVolumeSliderMax(greyedVolSeekBar)
+            changeVolumeSliderToCurrent(greyedVolSeekBar)
             updateVolumeImage(timerParams)
 
             targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
