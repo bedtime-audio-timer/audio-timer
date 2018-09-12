@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Hush - sleep timer</string>
-    <string name="VolumeLable">Decrease Volume to</string>
+    <string name="VolumeLabel">Decrease Volume to</string>
     <string name="TimerLabel">over</string>
 </resources>
