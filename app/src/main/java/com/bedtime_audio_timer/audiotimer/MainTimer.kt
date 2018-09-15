@@ -13,16 +13,34 @@ class MainTimer {
 
     public interface TimerCallback {
         fun onTimerFinished()
-        fun onVolumeChange()
+        fun onVolumeChange(newVolume: Int)
     }
-    var timer: Timer? = null //refers to the main timer for the application
+/*
+    public interface AppTimerCallback {
+        fun onVolumeChange(newVolume: Int)
+    }
+*/
 
+    var timer: Timer? = null //refers to the main timer for the application
+    val subscribers = mutableListOf<TimerCallback>()
 
     fun isRunning(): Boolean {
         return (timer != null);
     }
 
-    fun startMainTimer(timerParams: TimerParameters, cb: TimerCallback){
+    fun subscribe(cb: TimerCallback?){
+        subscribers.add(cb as TimerCallback)
+    }
+
+    fun unsubscribe(cb: TimerCallback?){
+        subscribers.remove(cb as TimerCallback)
+    }
+
+    fun unsubscribeAll(){
+        subscribers.clear()
+    }
+
+    fun startMainTimer(timerParams: TimerParameters/*, vlcb: AppTimerCallback*/){
         val numIntervals: Int = AudioTimerMath.findNumIntervals(timerParams)
         val numMinutes=timerParams.getMinutes()
         timer = Timer("interval timer", false)
@@ -43,12 +61,23 @@ class MainTimer {
         timer?.schedule(object : TimerTask() {
                 override fun run() {
                     AudioManagerSingleton.am.setVolume(nextVolume)
-                    cb.onVolumeChange();
+                    if (subscribers.any() == true){
+                        for (sub in subscribers){
+                            sub.onVolumeChange(nextVolume)
+                        }
+                    }
+
+
                     nextVolume -= 1
                     interval += 1
                     if (interval > numIntervals) {
                         cancelMainTimer()
-                        cb.onTimerFinished()
+
+                        if (subscribers.any() == true) {
+                            for (sub in subscribers) {
+                                sub.onTimerFinished()
+                            }
+                        }
                     }
                 }
         },  intervalLength, intervalLength)

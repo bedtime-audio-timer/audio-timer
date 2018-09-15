@@ -8,15 +8,27 @@ import android.support.v7.app.AppCompatActivity
 public class AudioTimerApplication : Application() {
 
     private var mTimer: MainTimer? = null
+    private var mOutsideVolumeListener: OutsideVolumeListener? = null
 
     override fun onCreate() {
         super.onCreate()
         mTimer = com.bedtime_audio_timer.audiotimer.MainTimer()
         instance = this
+        mOutsideVolumeListener = com.bedtime_audio_timer.audiotimer.OutsideVolumeListener()
+        mTimer?.subscribe(mOutsideVolumeListener)
+    }
+
+    override fun onTerminate() {
+        mTimer?.unsubscribeAll()
+        super.onTerminate()
     }
 
     fun getTimer(): MainTimer?{
         return mTimer
+    }
+
+    fun getListener(): OutsideVolumeListener?{
+        return mOutsideVolumeListener
     }
 
     companion object {

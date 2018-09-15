@@ -10,14 +10,3 @@ class AudioManagerSingleton {
     }
 }
 
-/*
-public object AudioManagerSingleton
-{
-
-    var am: AudioManager = getSystemService(AppCompatActivity.AUDIO_SERVICE) as AudioManager
-
-    init {
-        am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-    }
-
-}*/

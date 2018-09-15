@@ -5,6 +5,7 @@ import android.media.AudioManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.preference.PreferenceManager
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageButton
@@ -13,11 +14,13 @@ import android.widget.TextView
 import java.util.*
 import android.widget.Toast
 import com.bedtime_audio_timer.audiotimer.AudioManagerSingleton.Companion.am
+import com.bedtime_audio_timer.audiotimer.R.drawable.timer
 import com.bedtime_audio_timer.audiotimer.R.drawable.volume
 
-class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
+class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolumeListener.OutsideListenerMessage {
 
     private var mTimer: MainTimer? = null
+    private var outsideVolumeListener: OutsideVolumeListener? = null
 
     private var timer: Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
     private lateinit var timerTask: TimerTask
@@ -74,12 +77,16 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         setContentView(R.layout.activity_main)
 
         mTimer = (application as AudioTimerApplication).getTimer()
+        mTimer?.subscribe(this)
+
+        outsideVolumeListener = (application as AudioTimerApplication).getListener()
+        outsideVolumeListener?.startListening(this)
 
         if (savedInstanceState != null) {
             timerParams.loadFromBundle(savedInstanceState)
         }
         else {
-            timerParams.loadInitialSetting(getSystemService(AppCompatActivity.AUDIO_SERVICE) as AudioManager)
+            timerParams.loadInitialSetting()
         }
 
         updateVolumeTextView()
@@ -122,6 +129,11 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
         viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mTimer?.unsubscribe(this)
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {
@@ -217,16 +229,17 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         if (mTimer?.isRunning()!!) {
             val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
             myToast.show() //delete this Toast when interface makes cancellation clear.
+//            mTimer?.unsubscribe(this)
             mTimer?.cancelMainTimer()
         } else {
-            val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+            //val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             var numIntervals: Int
             numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
             if (numIntervals < 0) {
                 numIntervals = 0
             }
-
-            mTimer?.startMainTimer(timerParams, this)
+  //          mTimer?.subscribe(this)
+            mTimer?.startMainTimer(timerParams)
         }
         updateTimerButtonImage()
     }
@@ -241,7 +254,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
         })
     }
 
-    override fun onVolumeChange(){
+     override fun onVolumeChange(newVolume: Int){
         val curVolume = AudioTimerMath.currentVolumeToPercentage()
 
         handler.post(object: Runnable{
@@ -250,5 +263,18 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback {
                     myToast.show() //delete this Toast when interface is updated with current state.
             }
         })
+    }
+
+    override fun onOutsideVolumeChange(newVolume: Int){
+
+        //val curSystemVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
+
+        handler.post(object: Runnable{
+            override fun run(){
+                val myToast = Toast.makeText(this@MainActivity, "Volume changed outside: $newVolume", Toast.LENGTH_SHORT)
+                myToast.show() //delete this Toast when interface another message about finished timer pops up.
+            }
+        })
+
     }
 }
