@@ -3,6 +3,8 @@ package com.bedtime_audio_timer.audiotimer
 import android.media.AudioManager
 import com.bedtime_audio_timer.audiotimer.AudioManagerSingleton.Companion.am
 import com.bedtime_audio_timer.audiotimer.R.drawable.timer
+import java.sql.Time
+import java.time.LocalDateTime
 import java.util.*
 import java.util.function.ToLongFunction
 import kotlin.concurrent.schedule
@@ -23,6 +25,7 @@ class MainTimer {
 
     var timer: Timer? = null //refers to the main timer for the application
     val subscribers = mutableListOf<TimerCallback>()
+    var startTime: Calendar? = null
 
     fun isRunning(): Boolean {
         return (timer != null);
@@ -43,7 +46,9 @@ class MainTimer {
     fun startMainTimer(timerParams: TimerParameters/*, vlcb: AppTimerCallback*/){
         val numIntervals: Int = AudioTimerMath.findNumIntervals(timerParams)
         val numMinutes=timerParams.getMinutes()
+
         timer = Timer("interval timer", false)
+        startTime = Calendar.getInstance() //LocalDateTime.now()
 
         var intervalLength = AudioTimerMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         val startVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)

@@ -12,7 +12,7 @@ class OutsideVolumeListener : VolumeListener.Callback, MainTimer.TimerCallback{
         mVolumeListener?.startListening(this)
     }
     public interface OutsideListenerMessage{
-        fun onOutsideVolumeChange(newVolume: Int)
+        fun onOutsideVolumeChange(newVolume: Int, lastAppChangeVolume: Int)
     }
 
     fun startListening(receiver: OutsideListenerMessage){
@@ -25,7 +25,7 @@ class OutsideVolumeListener : VolumeListener.Callback, MainTimer.TimerCallback{
 
     override fun onVolumeChangeDetected(detectedVolume: Int) {
         if (detectedVolume != lastAppChange) { // volume was changed outside
-            cb?.onOutsideVolumeChange(detectedVolume)
+            cb?.onOutsideVolumeChange(detectedVolume, lastAppChange)
         }
     }
 

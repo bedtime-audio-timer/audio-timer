@@ -26,6 +26,15 @@ class TimerParameters {
         state.putInt("reply_minutes", minutes)
     }
 
+    fun set(min: Int, vol: Int){
+        minutes = min
+        volume = vol
+    }
+
+    fun setMinutes(min: Int){
+        minutes = min
+    }
+
     fun getVolume(): Int{
         return volume
     }
