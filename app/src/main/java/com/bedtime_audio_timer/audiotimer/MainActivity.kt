@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     }
 
     fun loadInitialSetting(){ // now it show current volume, but later presets can be loaded from file
-        volume = AudioTimerMath.percentageToMultipleOfIncrement(AudioTimerMath.currentVolumeToPercentage(), volumeIncrement)
+        volume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)//AudioTimerMath.percentageToMultipleOfIncrement(AudioTimerMath.currentVolumeToPercentage(), volumeIncrement)
         minutes = 5
     }
 
@@ -291,10 +291,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             timerParams.set(minutes, volume)
 
             var numIntervals: Int
-            numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
+            /*numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
             if (numIntervals < 0) {
                 numIntervals = 0
-            }
+            }*/
   //          mTimer?.subscribe(this)
             mTimer?.startMainTimer(timerParams)
         }
@@ -312,12 +312,14 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     }
 
      override fun onVolumeChange(newVolume: Int){
-        val curVolume = AudioTimerMath.currentVolumeToPercentage()
+        val curVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)//AudioTimerMath.currentVolumeToPercentage()
 
         handler.post(object: Runnable{
                 override fun run(){
                     val myToast = Toast.makeText(this@MainActivity, "Current volume: $curVolume%", Toast.LENGTH_SHORT)
                     myToast.show() //delete this Toast when interface is updated with current state.
+                    volume = curVolume
+                    updateVolumeTextView()
             }
         })
     }
@@ -331,10 +333,14 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 val myToast = Toast.makeText(this@MainActivity, "Volume changed outside: $newVolume", Toast.LENGTH_SHORT)
                 myToast.show() //delete this Toast when interface another message about finished timer pops up.
 
+                volume = newVolume
+                updateVolumeTextView()
+
                 if(mTimer?.isRunning()!!){
                     if (newVolume > lastAppChangeVolume){ //  if volume is increased: recalculate timer by default, remind user they can cancel timer
-                        /*mTimer?.cancelMainTimer()
-                        timerParams.setMinutes(timerParams.getMinutes())
+
+ /*                       mTimer?.cancelMainTimer()
+                        timerParams.setMinutes(timerParams.getMinutes() - mTimer.getProgress()/60000)
                         mTimer?.startMainTimer(timerParams)*/
                     }
                     /*else if(newVolume){

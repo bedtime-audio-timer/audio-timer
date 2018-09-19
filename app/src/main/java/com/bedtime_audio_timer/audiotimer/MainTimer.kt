@@ -25,7 +25,8 @@ class MainTimer {
 
     var timer: Timer? = null //refers to the main timer for the application
     val subscribers = mutableListOf<TimerCallback>()
-    var startTime: Calendar? = null
+    var startTime: Long = 0//Calendar? = null
+    var endTime: Long = 0//Calendar? = null
 
     fun isRunning(): Boolean {
         return (timer != null);
@@ -44,54 +45,89 @@ class MainTimer {
     }
 
     fun startMainTimer(timerParams: TimerParameters/*, vlcb: AppTimerCallback*/){
-        val numIntervals: Int = AudioTimerMath.findNumIntervals(timerParams)
-        val numMinutes=timerParams.getMinutes()
+//        val numIntervals: Int = AudioTimerMath.findNumIntervals(timerParams)
+  //      val numMinutes=timerParams.getMinutes()
 
         timer = Timer("interval timer", false)
-        startTime = Calendar.getInstance() //LocalDateTime.now()
+        startTime = System.currentTimeMillis()//Calendar.getInstance().timeInMillis //LocalDateTime.now()
 
-        var intervalLength = AudioTimerMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
+      //  var intervalLength = AudioTimerMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
         val startVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
         var nextVolume = startVolume - 1
-        var interval = 1
+        var currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-/*
-        for (interval in 1..numIntervals){
-            timer.schedule(intervalLength*interval) {
-                am.setVolume(nextVolume)
-                nextVolume -= 1
-            }
-        }
-*/
+        // formula of volume at any time of the timer
+        // v = startVolume + (timerParams.getVolume() - startVolume)/timerParams.gerMinutes() * t
+
+
         timer?.schedule(object : TimerTask() {
                 override fun run() {
-                    AudioManagerSingleton.am.setVolume(nextVolume)
-                    if (subscribers.any() == true){
-                        for (sub in subscribers){
-                            sub.onVolumeChange(nextVolume)
+
+                    val currentTime = System.currentTimeMillis()// Calendar.getInstance().timeInMillis
+                    val timePassed = currentTime - startTime
+
+                    nextVolume = (startVolume + (timerParams.getVolume() - startVolume).toDouble()/timerParams.getMinutes().toDouble() / 60000.toDouble() * timePassed).toInt()
+                    if(nextVolume < currentVolume){
+                        AudioManagerSingleton.am.setVolume(nextVolume)
+                        currentVolume = nextVolume
+                        if (subscribers.any() == true){
+                            for (sub in subscribers){
+                                sub.onVolumeChange(nextVolume)
+                            }
                         }
+
                     }
 
-
-                    nextVolume -= 1
-                    interval += 1
-                    if (interval > numIntervals) {
+                    if (timePassed >= timerParams.getMinutes() * 60000) {
                         cancelMainTimer()
 
-                        if (subscribers.any() == true) {
+                        if (subscribers.any()) {
                             for (sub in subscribers) {
                                 sub.onTimerFinished()
                             }
                         }
                     }
                 }
-        },  intervalLength, intervalLength)
+        },  2000, 2000)
 
+/*        timer?.schedule(object : TimerTask() {
+            override fun run() {
+                AudioManagerSingleton.am.setVolume(nextVolume)
+                if (subscribers.any() == true){
+                    for (sub in subscribers){
+                        sub.onVolumeChange(nextVolume)
+                    }
+                }
+
+
+                nextVolume -= 1
+                interval += 1
+                if (interval > numIntervals) {
+                    cancelMainTimer()
+
+                    if (subscribers.any() == true) {
+                        for (sub in subscribers) {
+                            sub.onTimerFinished()
+                        }
+                    }
+                }
+            }
+        },  intervalLength, intervalLength)
+*/
     }
 
     fun cancelMainTimer(){
+        endTime = System.currentTimeMillis()
         timer?.cancel() //the ? is the safe call operator in Kotlin
         timer = null
     }
-
+/*
+    fun getProgress(): Int{
+        if isRunning(){
+            return System.currentTimeMillis() - startTime
+        }
+        else {
+            return endTime - startTime
+        }
+    }*/
 }
