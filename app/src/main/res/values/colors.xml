@@ -6,7 +6,7 @@
     <color name="colorPrimary">#e18c2c</color>
     <color name="colorPrimaryDark">#50525c</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="sliderBackground">#FFFFFF</color>
     <color name="colorButton">#ebc441</color>
     <color name="colorButtonBackground">#524c45</color>
     <color name="colorBackground">#242a35</color>
