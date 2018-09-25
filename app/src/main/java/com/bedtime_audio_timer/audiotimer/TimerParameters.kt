@@ -41,11 +41,12 @@ class TimerParameters {
     }
 
     fun increaseVolume(){
-        if (volume < 100){
+        var maxVol: Int = AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        if (volume < maxVol){
             volume  += volumeIncrement
         }
-        if (volume > 100){
-            volume  = 100
+        if (volume > maxVol){
+            volume  = maxVol
         }
     }
 
@@ -71,5 +72,8 @@ class TimerParameters {
         }
     }
 
+    fun setVolume(vol: Int){
+        volume=vol
+    }
 
 }

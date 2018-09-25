@@ -8,11 +8,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import java.util.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolumeListener.OutsideListenerMessage {
 
@@ -47,14 +45,14 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             /*timerParams.*/ decreaseMinutes()
 
             if (buttonAction == ButtonAction.VOLUME_UP || buttonAction == ButtonAction.VOLUME_DOWN)
-                updateVolumeTextView()
+                //updateVolumeTextView()
             else
                 updateMinutesTextView()
         }
 
     }
 
-    // class for listeners when a button is hold
+/*    // class for listeners when a button is hold
     internal inner class TimerOnTouchListener : View.OnTouchListener {
 
         var buttonAction: ButtonAction = ButtonAction.VOLUME_UP
@@ -67,7 +65,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             }
             return false
         }
-    }
+    }*/
 
     @SuppressLint("ClickableViewAccessibility")
 
@@ -87,7 +85,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             /*timerParams.*/loadInitialSetting()
         }
 
-        updateVolumeTextView()
+        //updateVolumeTextView()
         updateMinutesTextView()
         updateTimerButtonImage()
 
@@ -107,7 +105,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         })
 
 
-        val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
+        /*val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
         val timerOnTouchListenerVolumeUp = TimerOnTouchListener()
         timerOnTouchListenerVolumeUp.buttonAction = ButtonAction.VOLUME_UP
         viewVolumeUp.setOnTouchListener(timerOnTouchListenerVolumeUp)
@@ -125,7 +123,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         val viewTimerDown = findViewById<View>(R.id.imgBtnTimerDown) as View
         val timerOnTouchListenerTimerDown = TimerOnTouchListener()
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
-        viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
+        viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)*/
+
+        val imgVolume = findViewById(R.id.imgVolume) as ImageView
+        VolumeSlider.resetValues(targetVolSeekBar, greyedVolseekBar, timerParams, imgVolume)
 
     }
 
@@ -186,9 +187,9 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         }
     }
 
-    fun increaseVolume(view: View?) {
+    /*fun increaseVolume(view: View?){
         /*timerParams.*/increaseVolume()
-        updateVolumeTextView()
+        //updateVolumeTextView()
     }
 
     // moving from TimerParameters
@@ -204,10 +205,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
     fun decreaseVolume(view: View?) {
         /*timerParams.*/decreaseVolume()
-        updateVolumeTextView()
-    }
+        //updateVolumeTextView()
+    }*/
 
-    //moving from TimerParameters
+    /*fun updateVolumeTextView() {
     fun decreaseVolume() {
         if (volume > 0) {
             volume -= volumeIncrement
@@ -232,7 +233,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         }
     }
 
-    fun updateVolumeTextView() {
         val showVolumeTextView = findViewById(R.id.textVolume) as TextView
         showVolumeTextView.text = (String.format("%3d", volume/*timerParams.getVolume()*/) + "%")
 
@@ -244,7 +244,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             in 26..50 -> imgVolume.setImageResource(R.drawable.volume_med)
             else -> imgVolume.setImageResource(R.drawable.volume_max)
         }
-    }
+    }*/
 
     fun updateMinutesTextView() {
         val hours_format: Int

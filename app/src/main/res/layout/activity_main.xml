@@ -23,11 +23,12 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
         android:text="@string/VolumeLable"
-        app:layout_constraintBottom_toTopOf="@+id/textVolume"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.649"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/timerLabelText"
@@ -46,20 +47,6 @@
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <TextView
-        android:id="@+id/textVolume"
-        style="@style/ValueText"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
         android:id="@+id/textTimer"
         style="@style/ValueText"
         android:layout_width="200dp"
@@ -76,13 +63,16 @@
 
     <ImageView
         android:id="@+id/imgVolume"
-        android:layout_width="72dp"
+        android:layout_width="71dp"
         android:layout_height="72dp"
         android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="Volume"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/textVolume"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/volume_med" />
 
     <ImageView
@@ -95,25 +85,6 @@
         app:layout_constraintEnd_toStartOf="@+id/textTimer"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         app:srcCompat="@drawable/timer" />
-
-    <ImageButton
-        android:id="@+id/imgBtnVolumeUp"
-        style="@style/UpArrowButton"
-        android:layout_marginBottom="4dp"
-        android:contentDescription="Increase Volume"
-        android:onClick="increaseVolume"
-        app:layout_constraintBottom_toTopOf="@+id/imgBtnVolumeDown"
-        app:layout_constraintStart_toEndOf="@+id/textVolume"
-        app:srcCompat="@android:drawable/arrow_up_float" />
-
-    <ImageButton
-        android:id="@+id/imgBtnVolumeDown"
-        style="@style/DownArrowButton"
-        android:contentDescription="Decrease Volume"
-        android:onClick="decreaseVolume"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toEndOf="@+id/textVolume"
-        app:srcCompat="@android:drawable/arrow_down_float" />
 
     <ImageButton
         android:id="@+id/imgBtnTimerUp"
@@ -152,4 +123,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTimer"
         app:srcCompat="@drawable/start" />
+
+    <SeekBar
+        android:id="@+id/greyedVolseekBar"
+        android:layout_width="242dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:thumbTint="@color/greyedOut"
+        android:progressTint="@color/greyedOut"
+        app:layout_constraintBottom_toBottomOf="@+id/targetVolSeekBar"
+        app:layout_constraintEnd_toEndOf="@+id/targetVolSeekBar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/targetVolSeekBar"
+        app:layout_constraintTop_toTopOf="@+id/targetVolSeekBar"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <SeekBar
+        android:id="@+id/targetVolSeekBar"
+        android:layout_width="242dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:thumbTint="@color/colorPrimary"
+        android:progressTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgVolume"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.248" />
+
+
 </android.support.constraint.ConstraintLayout>

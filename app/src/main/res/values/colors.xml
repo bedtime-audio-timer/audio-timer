@@ -12,5 +12,5 @@
     <color name="colorBackground">#242a35</color>
     <color name="colorTitle">#ffab40</color>
     <color name="colorValue">#FFAAAAAA</color>
-
+    <color name="greyedOut">#705131</color>
 </resources>
