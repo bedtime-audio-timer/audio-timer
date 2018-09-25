@@ -27,7 +27,7 @@ class VolumeListener {
                     lastVolume = currentVolume
                 }
             }
-        },  2000, 2000)
+        },  113, 113)
 
     }
 

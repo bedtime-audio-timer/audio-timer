@@ -2,45 +2,42 @@ package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.getSystemService
-import android.support.v7.app.AppCompatActivity
-import android.view.View
 
 class TimerParameters {
     private var volume: Int = 0
-    private var minutes: Int = 0
+    private var millis: Long = 0
 
     fun loadInitialSetting(){ // now it show current volume, but later presets can be loaded from file
         volume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)//AudioTimerMath.percentageToMultipleOfIncrement(AudioTimerMath.currentVolumeToPercentage(), volumeIncrement)
-        minutes = 5
+        millis = 0
     }
 
     fun loadFromBundle(state: Bundle){ // to restore the values when activity is recreated after configuration change
         volume = state.getInt("reply_volume")
-        minutes = state.getInt("reply_minutes")
+        millis = state.getLong("reply_minutes")
 
     }
 
     fun saveFromBundle(state: Bundle){ // to save the values when activity is destroyed on configuration change
         state.putInt("reply_volume", volume)
-        state.putInt("reply_minutes", minutes)
+        state.putLong("reply_minutes", millis)
     }
 
-    fun set(min: Int, vol: Int){
-        minutes = min
+    fun set(mil: Long, vol: Int){
+        millis = mil
         volume = vol
     }
 
-    fun setMinutes(min: Int){
-        minutes = min
+    fun setMillis(mil: Long){
+        millis = mil
     }
 
     fun getVolume(): Int{
         return volume
     }
 
-    fun getMinutes(): Int{
-        return minutes
+    fun getMillis(): Long{
+        return millis
     }
 
     fun increaseVolume(){
@@ -62,15 +59,15 @@ class TimerParameters {
     }
 
     fun increaseMinutes() {
-        minutes += minutesIncrement
+        millis += minutesIncrement
     }
 
     fun decreaseMinutes() {
-        if (minutes > 0) {
-            minutes -= minutesIncrement
+        if (millis > 0) {
+            millis -= minutesIncrement
         }
-        if (minutes < 0) {
-            minutes = 0
+        if (millis < 0) {
+            millis = 0
         }
     }
 
