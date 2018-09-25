@@ -2,25 +2,31 @@ package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
 import android.os.Bundle
+import com.bedtime_audio_timer.audiotimer.R.drawable.volume
 
-class TimerParameters {
+class TimerParameters (val Running : Boolean = false) {
     private var volume: Int = 0
     private var millis: Long = 0
+    private var running: Boolean = false
+
+    init {
+        running = Running
+    }
 
     fun loadInitialSetting(){ // now it show current volume, but later presets can be loaded from file
         volume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)//AudioTimerMath.percentageToMultipleOfIncrement(AudioTimerMath.currentVolumeToPercentage(), volumeIncrement)
-        millis = 0
+        millis = 5 * 60000
     }
 
     fun loadFromBundle(state: Bundle){ // to restore the values when activity is recreated after configuration change
-        volume = state.getInt("reply_volume")
-        millis = state.getLong("reply_minutes")
+        volume = state.getInt("reply_volume" + running.toString())
+        millis = state.getLong("reply_minutes" + running.toString())
 
     }
 
     fun saveFromBundle(state: Bundle){ // to save the values when activity is destroyed on configuration change
-        state.putInt("reply_volume", volume)
-        state.putLong("reply_minutes", millis)
+        state.putInt("reply_volume" + running.toString(), volume)
+        state.putLong("reply_minutes" + running.toString(), millis)
     }
 
     fun set(mil: Long, vol: Int){
@@ -38,6 +44,10 @@ class TimerParameters {
 
     fun getMillis(): Long{
         return millis
+    }
+
+    fun getMinutes(): Int{
+        return (millis / 60000).toInt()
     }
 
     fun increaseVolume(){
@@ -60,15 +70,15 @@ class TimerParameters {
     }
 
     fun increaseMinutes() {
-        millis += minutesIncrement
+        millis += minutesIncrement * 60000
     }
 
     fun decreaseMinutes() {
-        if (millis > 0) {
-            millis -= minutesIncrement
+        if (millis > 60000) {
+            millis -= minutesIncrement * 60000
         }
-        if (millis < 0) {
-            millis = 0
+        if (millis < 60000) {
+            millis = 60000
         }
     }
 

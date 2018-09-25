@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import com.bedtime_audio_timer.audiotimer.R.drawable.volume
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,10 +21,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     private var timer: Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
     private lateinit var timerTask: TimerTask
     private val handler = Handler()
-    private var volume: Int = 0
-    private var minutes: Int = 0
+    //private var volume: Int = 0
+    //private var minutes: Int = 0
     private var timerParams = TimerParameters()
-
+    private var timerRunningParams = TimerParameters(true)
     // enum that defines what button is hold so the TimerRunnable object could increases/decreases volume/minutes
     enum class ButtonAction {
         VOLUME_UP, VOLUME_DOWN, TIMER_UP, TIMER_DOWN
@@ -36,13 +37,13 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
         override fun run() {
             if (buttonAction == ButtonAction.VOLUME_UP)
-            /*timerParams.*/ increaseVolume()
+            /*timerParams.*/ //increaseVolume()
             else if (buttonAction == ButtonAction.VOLUME_DOWN)
-            /*timerParams.*/ decreaseVolume()
+            /*timerParams.*/ //decreaseVolume()
             else if (buttonAction == ButtonAction.TIMER_UP)
-            /*timerParams.*/ increaseMinutes()
+                timerParams.increaseMinutes()
             else if (buttonAction == ButtonAction.TIMER_DOWN)
-            /*timerParams.*/ decreaseMinutes()
+                timerParams.decreaseMinutes()
 
             if (buttonAction == ButtonAction.VOLUME_UP || buttonAction == ButtonAction.VOLUME_DOWN)
                 //updateVolumeTextView()
@@ -80,9 +81,11 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         outsideVolumeListener?.startListening(this)
 
         if (savedInstanceState != null) {
-            /*timerParams.*/loadFromBundle(savedInstanceState)
+            timerParams.loadFromBundle(savedInstanceState)
+            timerRunningParams.loadFromBundle(savedInstanceState)
         } else {
-            /*timerParams.*/loadInitialSetting()
+            timerParams.loadInitialSetting()
+            timerRunningParams.loadInitialSetting()
         }
 
         //updateVolumeTextView()
@@ -138,9 +141,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        /*timerParams.*/saveFromBundle(outState)
+        timerParams.saveFromBundle(outState)
+        timerRunningParams.saveFromBundle(outState)
     }
-
+/*
     fun loadInitialSetting() { // now it show current volume, but later presets can be loaded from file
         volume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)//AudioTimerMath.percentageToMultipleOfIncrement(AudioTimerMath.currentVolumeToPercentage(), volumeIncrement)
         minutes = 5
@@ -158,7 +162,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         state.putInt("reply_timer_volume", timerParams.getVolume())
         state.putLong("reply_timer_millis", timerParams.getMillis())
     }
-
+*/
 
     fun startTimer(btnAct: ButtonAction) {
         timer = Timer()
@@ -250,8 +254,8 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         val hours_format: Int
         val minutes_format: Int
 
-        hours_format = /*timerParams.getMinutes()*/ minutes / 60
-        minutes_format = /*timerParams.getMinutes()*/ minutes % 60
+        hours_format = timerParams.getMinutes() / 60
+        minutes_format = timerParams.getMinutes() % 60
 
         val showTimerTextView = findViewById(R.id.textTimer) as TextView
         showTimerTextView.text = (String.format("%02d:%02d", hours_format, minutes_format))
@@ -259,15 +263,29 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     }
 
     fun increaseMinutes(view: View?) {
-        /*timerParams.*/increaseMinutes()
+        timerParams.increaseMinutes()
         updateMinutesTextView()
     }
 
     fun decreaseMinutes(view: View?) {
-        /*timerParams.*/decreaseMinutes()
+        timerParams.decreaseMinutes()
         updateMinutesTextView()
     }
+/*
+    fun increaseMinutes() {
+        minutes += minutesIncrement
+    }
 
+    // moved from TimerParameters
+    fun decreaseMinutes() {
+        if (minutes > 1) {
+            minutes -= minutesIncrement
+        }
+        if (minutes < 1) {
+            minutes = 1
+        }
+    }
+*/
     fun updateTimerButtonImage() {
         val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
         if (mTimer?.isRunning()!!) {
@@ -283,14 +301,15 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             myToast.show() //delete this Toast when interface makes cancellation clear.
 //            mTimer?.unsubscribe(this)
             mTimer?.cancelMainTimer()
-        } else if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) <= volume){  // Move to MainTimer!!!
+        } else if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) <= timerParams.getVolume()){  // Move to MainTimer!!!
             val myToast = Toast.makeText(this, "Nothing to change", Toast.LENGTH_SHORT)
             myToast.show() //delete this Toast when interface makes cancellation clear.
         }
         else
         {
             //val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-            timerParams.set((minutes * 60000).toLong(), volume)
+            //timerRunningParams.set((minutes * 60000).toLong(), volume)
+            timerRunningParams.set(timerParams.getMillis(), timerParams.getVolume())
 
             var numIntervals: Int
             /*numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
@@ -298,7 +317,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 numIntervals = 0
             }*/
             //          mTimer?.subscribe(this)
-            mTimer?.startMainTimer(timerParams)
+            mTimer?.startMainTimer(timerRunningParams)
         }
         updateTimerButtonImage()
     }
@@ -320,8 +339,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             override fun run() {
                 val myToast = Toast.makeText(this@MainActivity, "Current volume: $curVolume%", Toast.LENGTH_SHORT)
        //         myToast.show() //delete this Toast when interface is updated with current state.
-                volume = curVolume
-                updateVolumeTextView()
+                timerParams.setVolume(curVolume)
+                // update slider!!!
+                //updateVolumeTextView()
+                VolumeSlider.changeVolumeSliderToCurrent(greyedVolseekBar)
             }
         })
     }
@@ -336,21 +357,23 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             //    myToast.show() //delete this Toast when interface another message about finished timer pops up.
                 Log.d("MainActivity ", "volume changed outside to " + newVolume + ", system volume " + curSystemVolume)
 
-                volume = newVolume
-                updateVolumeTextView()
+                timerParams.setVolume(newVolume)//volume = newVolume
+                // update slider!!!
+                //updateVolumeTextView()
+                VolumeSlider.changeVolumeSliderToCurrent(greyedVolseekBar)
 
                 if (mTimer?.isRunning()!!) {
                     //  if volume is increased: recalculate timer by default, remind user they can cancel timer
                     //  if volume is decreased but higher then target: recalculate timer by default, remind user they can cancel timer
-                    if (newVolume > timerParams.getVolume()) {
+                    if (newVolume > timerRunningParams.getVolume()) {
 
                        mTimer?.cancelMainTimer()
-                       timerParams.setMillis(timerParams.getMillis() - mTimer?.getProgress()!!)
+                        timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress()!!)
                        Log.d("MainActivity ", "recalculating")
                        val myToast = Toast.makeText(this@MainActivity, "Volume is changed, timer is recalculated", Toast.LENGTH_SHORT)
-                       mTimer?.startMainTimer(timerParams)
+                       mTimer?.startMainTimer(timerRunningParams)
                     }
-                    else if (newVolume <= timerParams.getVolume()){
+                    else if (newVolume <= timerRunningParams.getVolume()){
                         mTimer?.cancelMainTimer()
                         Log.d("MainActivity ", "cancelling")
                         val myToast = Toast.makeText(this@MainActivity, "Volume is decreased, timer is cancelled", Toast.LENGTH_SHORT)
