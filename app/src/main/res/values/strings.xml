@@ -2,5 +2,11 @@
     <string name="app_name">Hush - sleep timer</string>
     <string name="volume_label">Decrease Volume to</string>
     <string name="timer_label">over</string>
-    <string name="app_description">Hush will slowly soften the sound of your evening listening to the volume of your choice.\nYou can choose how long the timer will take and how soft the sound will be on the next page.\nSweet dreams, friend.</string>
+    <string name="app_description">Hush will slowly soften the sound of your evening listening to the volume of your choice.\nYou can choose how long the timer will take and how soft the sound will be on the next page.</string>
+    <string name="welcome_button">→</string>
+    <string-array name="welcome_finale">
+        <item>Sweet dreams, friend.</item>
+        <item>Sleep well, friend.</item>
+        <item>Good night, friend.</item>
+    </string-array>
 </resources>
