@@ -25,6 +25,13 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     //private var minutes: Int = 0
     private var timerParams = TimerParameters()
     private var timerRunningParams = TimerParameters(true)
+
+    internal var pStatus = 100
+ //   private val handler = Handler()
+    internal lateinit var tv: TextView
+    private var timerProgress: Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
+
+
     // enum that defines what button is hold so the TimerRunnable object could increases/decreases volume/minutes
     enum class ButtonAction {
         VOLUME_UP, VOLUME_DOWN, TIMER_UP, TIMER_DOWN
@@ -53,7 +60,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
     }
 
-/*    // class for listeners when a button is hold
+    // class for listeners when a button is hold
     internal inner class TimerOnTouchListener : View.OnTouchListener {
 
         var buttonAction: ButtonAction = ButtonAction.VOLUME_UP
@@ -66,7 +73,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             }
             return false
         }
-    }*/
+    }
 
     @SuppressLint("ClickableViewAccessibility")
 
@@ -130,7 +137,42 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
         val imgVolume = findViewById(R.id.imgVolume) as ImageView
         VolumeSlider.resetValues(targetVolSeekBar, greyedVolseekBar, timerParams, imgVolume)
+        TimerProgressBar.resetValues(timerProgressBar, 100)
 
+        val res = resources
+        val drawable = res.getDrawable(R.drawable.circular)
+        val mProgress = findViewById<View>(R.id.circularProgressbar) as ProgressBar
+        mProgress.progress = 100//0   // Main Progress
+        mProgress.secondaryProgress = 100 // Secondary Progress
+        mProgress.max = 100 // Maximum Progress
+       // mProgress.progressDrawable = drawable
+
+        /*  ObjectAnimator animation = ObjectAnimator.ofInt(mProgress, "progress", 0, 100);
+        animation.setDuration(50000);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();*/
+
+        tv = findViewById<View>(R.id.tv) as TextView
+        Thread(Runnable {
+            // TODO Auto-generated method stub
+            while (pStatus > 0) {
+                pStatus -= 1
+
+                handler.post {
+                    // TODO Auto-generated method stub
+                    mProgress.progress = pStatus//(mTimer?.getProgress()!!*100/timerRunningParams.getMillis()).toInt()//pStatus
+                    tv.text = pStatus.toString() + "%"
+                }
+                try {
+                    // Sleep for 200 milliseconds.
+                    // Just to display the progress slowly
+                    Thread.sleep(100) //thread will take approx 3 seconds to finish
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+
+            }
+        }).start()
     }
 
     override fun onDestroy() {
@@ -191,6 +233,21 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         }
     }
 
+    fun startCheckingProgress(){
+        timerProgress = Timer("Timer progress", false)
+
+        timerProgress?.schedule(object : TimerTask() {
+            override fun run() {
+                
+            }
+        },  timerProgressPeriod, timerProgressPeriod)
+
+    }
+
+    fun cancelCheckingProgress(){
+        timer?.cancel() //the ? is the safe call operator in Kotlin
+        timer = null
+    }
     /*fun increaseVolume(view: View?){
         /*timerParams.*/increaseVolume()
         //updateVolumeTextView()
@@ -317,6 +374,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 numIntervals = 0
             }*/
             //          mTimer?.subscribe(this)
+            TimerProgressBar.setMaxValue((timerRunningParams.getMillis()/1000).toInt())
             mTimer?.startMainTimer(timerRunningParams)
         }
         updateTimerButtonImage()
@@ -343,6 +401,8 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 // update slider!!!
                 //updateVolumeTextView()
                 VolumeSlider.changeVolumeSliderToCurrent(greyedVolseekBar)
+                var timerProgress = mTimer?.getProgress()
+                TimerProgressBar.setProgress(((timerProgress!!).div(1000).toInt()))
             }
         })
     }
