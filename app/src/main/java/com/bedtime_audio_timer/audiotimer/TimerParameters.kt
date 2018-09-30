@@ -46,6 +46,10 @@ class TimerParameters (val Running : Boolean = false) {
         return millis
     }
 
+    fun getSeconds(): Int{
+        return (millis / 1000).toInt()
+    }
+
     fun getMinutes(): Int{
         return (millis / 60000).toInt()
     }

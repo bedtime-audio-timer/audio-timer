@@ -14,8 +14,8 @@ class TimerProgressBar{
             prBar.progress = maxProgress
         }
 
-        fun setProgress(value : Int){
-            prBar.progress = value
+        fun setProgress(timerProgBar: ProgressBar, value : Int){
+            timerProgBar.progress = value
         }
 
         fun resetValues(timerProgBar: ProgressBar, maxProgress: Int){

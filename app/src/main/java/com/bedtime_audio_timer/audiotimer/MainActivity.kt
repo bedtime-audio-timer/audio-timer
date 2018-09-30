@@ -3,15 +3,19 @@ package com.bedtime_audio_timer.audiotimer
 import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
-import com.bedtime_audio_timer.audiotimer.R.drawable.volume
+//import com.bedtime_audio_timer.audiotimer.R.id.timerProgressBar
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
+
+
+
 
 class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolumeListener.OutsideListenerMessage {
 
@@ -21,16 +25,15 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     private var timer: Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
     private lateinit var timerTask: TimerTask
     private val handler = Handler()
-    //private var volume: Int = 0
-    //private var minutes: Int = 0
+
     private var timerParams = TimerParameters()
     private var timerRunningParams = TimerParameters(true)
 
     internal var pStatus = 100
- //   private val handler = Handler()
-    internal lateinit var tv: TextView
-    private var timerProgress: Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
 
+    private val handlerProgress = Handler()
+    internal lateinit var tv: TextView
+    private var timerProgress : Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
 
     // enum that defines what button is hold so the TimerRunnable object could increases/decreases volume/minutes
     enum class ButtonAction {
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             if (buttonAction == ButtonAction.VOLUME_UP || buttonAction == ButtonAction.VOLUME_DOWN)
                 //updateVolumeTextView()
             else
-                updateMinutesTextView()
+                updateMinutesTextView(timerParams.getSeconds())
         }
 
     }
@@ -96,7 +99,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         }
 
         //updateVolumeTextView()
-        updateMinutesTextView()
+        updateMinutesTextView(timerParams.getSeconds())
         updateTimerButtonImage()
 
         val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
@@ -114,17 +117,17 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             false
         })
 
-
-        /*val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
+/*
+        val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
         val timerOnTouchListenerVolumeUp = TimerOnTouchListener()
         timerOnTouchListenerVolumeUp.buttonAction = ButtonAction.VOLUME_UP
-        viewVolumeUp.setOnTouchListener(timerOnTouchListenerVolumeUp)
+        imgBtnVolumeUp.setOnTouchListener(timerOnTouchListenerVolumeUp)
 
         val viewVolumeDown = findViewById<View>(R.id.imgBtnVolumeDown) as View
         val timerOnTouchListenerVolumeDown = TimerOnTouchListener()
         timerOnTouchListenerVolumeDown.buttonAction = ButtonAction.VOLUME_DOWN
         viewVolumeDown.setOnTouchListener(timerOnTouchListenerVolumeDown)
-
+*/
         val viewTimerUp = findViewById<View>(R.id.imgBtnTimerUp) as View
         val timerOnTouchListenerTimerUp = TimerOnTouchListener()
         timerOnTouchListenerTimerUp.buttonAction = ButtonAction.TIMER_UP
@@ -133,24 +136,22 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         val viewTimerDown = findViewById<View>(R.id.imgBtnTimerDown) as View
         val timerOnTouchListenerTimerDown = TimerOnTouchListener()
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
-        viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)*/
+        viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
 
         val imgVolume = findViewById(R.id.imgVolume) as ImageView
         VolumeSlider.resetValues(targetVolSeekBar, greyedVolseekBar, timerParams, imgVolume)
-        TimerProgressBar.resetValues(timerProgressBar, 100)
+        // TimerProgressBar.resetValues(circularProgressbar, 100)
 
         val res = resources
         val drawable = res.getDrawable(R.drawable.circular)
-        val mProgress = findViewById<View>(R.id.circularProgressbar) as ProgressBar
-        mProgress.progress = 100//0   // Main Progress
+        circularProgressbar.progressDrawable = drawable
+
+/*        val mProgress = findViewById<View>(R.id.circularProgressbar) as ProgressBar
+        mProgress.progress = 0   // Main Progress
         mProgress.secondaryProgress = 100 // Secondary Progress
         mProgress.max = 100 // Maximum Progress
-       // mProgress.progressDrawable = drawable
+        mProgress.progressDrawable = drawable
 
-        /*  ObjectAnimator animation = ObjectAnimator.ofInt(mProgress, "progress", 0, 100);
-        animation.setDuration(50000);
-        animation.setInterpolator(new DecelerateInterpolator());
-        animation.start();*/
 
         tv = findViewById<View>(R.id.tv) as TextView
         Thread(Runnable {
@@ -166,13 +167,14 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 try {
                     // Sleep for 200 milliseconds.
                     // Just to display the progress slowly
-                    Thread.sleep(100) //thread will take approx 3 seconds to finish
+                    Thread.sleep(25) //thread will take approx 3 seconds to finish
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
 
             }
         }).start()
+*/
     }
 
     override fun onDestroy() {
@@ -186,25 +188,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         timerParams.saveFromBundle(outState)
         timerRunningParams.saveFromBundle(outState)
     }
-/*
-    fun loadInitialSetting() { // now it show current volume, but later presets can be loaded from file
-        volume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)//AudioTimerMath.percentageToMultipleOfIncrement(AudioTimerMath.currentVolumeToPercentage(), volumeIncrement)
-        minutes = 5
-    }
-
-    fun loadFromBundle(state: Bundle) { // to restore the values when activity is recreated after configuration change
-        volume = state.getInt("reply_volume")
-        minutes = state.getInt("reply_minutes")
-        timerParams.set(state.getLong("reply_timer_millis"), state.getInt("reply_timer_volume"))
-    }
-
-    fun saveFromBundle(state: Bundle) { // to save the values when activity is destroyed on configuration change
-        state.putInt("reply_volume", volume)
-        state.putInt("reply_minutes", minutes)
-        state.putInt("reply_timer_volume", timerParams.getVolume())
-        state.putLong("reply_timer_millis", timerParams.getMillis())
-    }
-*/
 
     fun startTimer(btnAct: ButtonAction) {
         timer = Timer()
@@ -233,116 +216,30 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         }
     }
 
-    fun startCheckingProgress(){
-        timerProgress = Timer("Timer progress", false)
-
-        timerProgress?.schedule(object : TimerTask() {
-            override fun run() {
-                
-            }
-        },  timerProgressPeriod, timerProgressPeriod)
-
-    }
-
-    fun cancelCheckingProgress(){
-        timer?.cancel() //the ? is the safe call operator in Kotlin
-        timer = null
-    }
-    /*fun increaseVolume(view: View?){
-        /*timerParams.*/increaseVolume()
-        //updateVolumeTextView()
-    }
-
-    // moving from TimerParameters
-    fun increaseVolume() {
-        if (volume < 100) {
-            volume += volumeIncrement
-        }
-        if (volume > 100) {
-            volume = 100
-        }
-    }
-
-
-    fun decreaseVolume(view: View?) {
-        /*timerParams.*/decreaseVolume()
-        //updateVolumeTextView()
-    }*/
-
-    /*fun updateVolumeTextView() {
-    fun decreaseVolume() {
-        if (volume > 0) {
-            volume -= volumeIncrement
-        }
-        if (volume < 0) {
-            volume = 0
-        }
-    }
-
-    // moved from TimerParameters
-    fun increaseMinutes() {
-        minutes += minutesIncrement
-    }
-
-    // moved from TimerParameters
-    fun decreaseMinutes() {
-        if (minutes > 0) {
-            minutes -= minutesIncrement
-        }
-        if (minutes < 0) {
-            minutes = 0
-        }
-    }
-
-        val showVolumeTextView = findViewById(R.id.textVolume) as TextView
-        showVolumeTextView.text = (String.format("%3d", volume/*timerParams.getVolume()*/) + "%")
-
-        val imgVolume = findViewById(R.id.imgVolume) as ImageView
-
-        when (/*timerParams.getVolume()*/volume) {
-            0 -> imgVolume.setImageResource(R.drawable.mute)
-            in 1..25 -> imgVolume.setImageResource(R.drawable.volume_min)
-            in 26..50 -> imgVolume.setImageResource(R.drawable.volume_med)
-            else -> imgVolume.setImageResource(R.drawable.volume_max)
-        }
-    }*/
-
-    fun updateMinutesTextView() {
+    fun updateMinutesTextView(seconds: Int) {
         val hours_format: Int
         val minutes_format: Int
+        val seconds_format: Int
 
-        hours_format = timerParams.getMinutes() / 60
-        minutes_format = timerParams.getMinutes() % 60
+        hours_format = seconds / 3600 //timerParams.getMinutes() / 60
+        minutes_format = (seconds - hours_format * 3600)/ 60
+        seconds_format = (seconds - hours_format * 3600 - minutes_format * 60) % 60//timerParams.getMinutes() % 60
 
-        val showTimerTextView = findViewById(R.id.textTimer) as TextView
-        showTimerTextView.text = (String.format("%02d:%02d", hours_format, minutes_format))
+
+        textTimer.text = (String.format("%02d:%02d:%02d", hours_format, minutes_format, seconds_format))
 
     }
 
     fun increaseMinutes(view: View?) {
         timerParams.increaseMinutes()
-        updateMinutesTextView()
+        updateMinutesTextView(timerParams.getSeconds())
     }
 
     fun decreaseMinutes(view: View?) {
         timerParams.decreaseMinutes()
-        updateMinutesTextView()
-    }
-/*
-    fun increaseMinutes() {
-        minutes += minutesIncrement
+        updateMinutesTextView(timerParams.getSeconds())
     }
 
-    // moved from TimerParameters
-    fun decreaseMinutes() {
-        if (minutes > 1) {
-            minutes -= minutesIncrement
-        }
-        if (minutes < 1) {
-            minutes = 1
-        }
-    }
-*/
     fun updateTimerButtonImage() {
         val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
         if (mTimer?.isRunning()!!) {
@@ -358,24 +255,22 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             myToast.show() //delete this Toast when interface makes cancellation clear.
 //            mTimer?.unsubscribe(this)
             mTimer?.cancelMainTimer()
+            cancelCheckingProgress()
+            //updateMinutesTextView(timerParams.getSeconds())
         } else if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) <= timerParams.getVolume()){  // Move to MainTimer!!!
             val myToast = Toast.makeText(this, "Nothing to change", Toast.LENGTH_SHORT)
             myToast.show() //delete this Toast when interface makes cancellation clear.
         }
         else
         {
-            //val am: AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-            //timerRunningParams.set((minutes * 60000).toLong(), volume)
             timerRunningParams.set(timerParams.getMillis(), timerParams.getVolume())
 
-            var numIntervals: Int
-            /*numIntervals = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) - AudioTimerMath.percentageToVolume(timerParams.getVolume())
-            if (numIntervals < 0) {
-                numIntervals = 0
-            }*/
-            //          mTimer?.subscribe(this)
-            TimerProgressBar.setMaxValue((timerRunningParams.getMillis()/1000).toInt())
+            circularProgressbar.max = (timerRunningParams.getMillis()/1000).toInt()
+            circularProgressbar.progress = (timerRunningParams.getMillis()/1000).toInt()//0   // Main Progress
+            circularProgressbar.secondaryProgress = (timerRunningParams.getMillis()/1000).toInt() // Secondary Progress
+
             mTimer?.startMainTimer(timerRunningParams)
+            startCheckingProgress()
         }
         updateTimerButtonImage()
     }
@@ -386,6 +281,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 val myToast = Toast.makeText(this@MainActivity, "Timer is finished!", Toast.LENGTH_SHORT)
                 myToast.show() //delete this Toast when interface another message about finished timer pops up.
                 updateTimerButtonImage()
+                updateProgress()
             }
         })
     }
@@ -401,8 +297,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 // update slider!!!
                 //updateVolumeTextView()
                 VolumeSlider.changeVolumeSliderToCurrent(greyedVolseekBar)
-                var timerProgress = mTimer?.getProgress()
-                TimerProgressBar.setProgress(((timerProgress!!).div(1000).toInt()))
+                TimerProgressBar.setProgress(circularProgressbar, (mTimer?.getProgress()!!/1000).toInt())
             }
         })
     }
@@ -428,13 +323,16 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                     if (newVolume > timerRunningParams.getVolume()) {
 
                        mTimer?.cancelMainTimer()
-                        timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress()!!)
+                       cancelCheckingProgress()
+                       timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress()!!)
                        Log.d("MainActivity ", "recalculating")
                        val myToast = Toast.makeText(this@MainActivity, "Volume is changed, timer is recalculated", Toast.LENGTH_SHORT)
                        mTimer?.startMainTimer(timerRunningParams)
+                       startCheckingProgress()
                     }
                     else if (newVolume <= timerRunningParams.getVolume()){
                         mTimer?.cancelMainTimer()
+                        cancelCheckingProgress()
                         Log.d("MainActivity ", "cancelling")
                         val myToast = Toast.makeText(this@MainActivity, "Volume is decreased, timer is cancelled", Toast.LENGTH_SHORT)
                     }
@@ -444,4 +342,38 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         })
 
     }
+
+    fun startCheckingProgress(){
+        timerProgress = Timer("Timer progress", false)
+
+        timerProgress?.schedule(object : TimerTask() {
+            override fun run() {
+
+                updateProgress()
+
+                }
+            },  timerProgressPeriod.toLong(), timerProgressPeriod.toLong())
+
+    }
+
+    private fun updateProgress() {
+
+        if (mTimer?.isRunning()!!){
+
+            handlerProgress.post(object : Runnable{
+                override fun run() {
+                    var tmp = (mTimer?.getProgress()!!/1000).toInt()
+                    circularProgressbar.progress = tmp
+                    updateMinutesTextView(tmp)
+                }
+            })
+
+        }
+    }
+
+    fun cancelCheckingProgress(){
+        timerProgress?.cancel() //the ? is the safe call operator in Kotlin
+        timerProgress = null
+    }
+
 }
