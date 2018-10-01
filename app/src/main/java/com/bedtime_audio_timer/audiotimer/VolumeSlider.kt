@@ -13,6 +13,7 @@ class VolumeSlider{
 
         lateinit var imgVolume: ImageView
         lateinit var greyedVolSeekBar: SeekBar
+        lateinit var oldVolSeekBar: SeekBar
 
         fun updateVolumeImage(timerParams: TimerParameters) {
 
@@ -39,14 +40,17 @@ class VolumeSlider{
             }
         }
 
-        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, timerParams: TimerParameters, volImage: ImageView){
+        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, timerParams: TimerParameters, volImage: ImageView){
             imgVolume = volImage
             targetVolSeekBar = volSlider
             greyedVolSeekBar = greyedSlider
+            oldVolSeekBar=originalSlider
             setVolumeSliderMax(targetVolSeekBar)
             changeVolumeSliderToCurrent(targetVolSeekBar)
             setVolumeSliderMax(greyedVolSeekBar)
             changeVolumeSliderToCurrent(greyedVolSeekBar)
+            setVolumeSliderMax(oldVolSeekBar)
+            changeVolumeSliderToCurrent(oldVolSeekBar)
             updateVolumeImage(timerParams)
 
             targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
