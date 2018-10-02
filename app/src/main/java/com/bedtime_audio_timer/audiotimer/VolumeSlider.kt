@@ -28,6 +28,7 @@ class VolumeSlider{
 
         fun resetAfterTimerCancel(){
             timerParams.setVolume(targetVolSeekBar.progress)
+            changeVolumeSliderToCurrent(oldVolSeekBar)
         }
 
         lateinit var targetVolSeekBar: SeekBar
