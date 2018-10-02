@@ -1,6 +1,7 @@
 package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
+import android.provider.ContactsContract
 import android.widget.ImageView
 import android.widget.SeekBar
 
@@ -10,21 +11,9 @@ class VolumeSlider{
     companion object {
 
         var maxVol = AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        lateinit var imgVolume: ImageView
         lateinit var greyedVolSeekBar: SeekBar
         lateinit var oldVolSeekBar: SeekBar
         lateinit var timerParams: TimerParameters
-
-
-        fun updateVolumeImage(timerParams: TimerParameters) {
-
-            when (timerParams.getVolume()){
-                0 -> imgVolume.setImageResource(R.drawable.mute)
-                in 1..maxVol/4 -> imgVolume.setImageResource(R.drawable.volume_min)
-                in maxVol/4+1..maxVol/2 -> imgVolume.setImageResource(R.drawable.volume_med)
-                else -> imgVolume.setImageResource(R.drawable.volume_max)
-            }
-        }
 
         //since this function is no longer only called after timer cancel it should be renamed in near future.
         fun resetAfterTimerCancel(){
@@ -59,12 +48,12 @@ class VolumeSlider{
             changeVolumeSliderToCurrent(oldVolSeekBar)
         }
 
-        fun setListeners(timer: MainTimer?){
+        fun setListeners(timer: MainTimer?, imgVolume: ImageView){
             targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
                     capVolume(targetVolSeekBar)
                     timerParams.setVolume(volSeekBar.getProgress())
-                    updateVolumeImage(timerParams)
+                    SpeakerIcon.updateVolumeImage(timerParams, imgVolume, maxVol)
                 }
                 override fun onStartTrackingTouch(volSeekBar: SeekBar) {
                     //Even though this is currently empty, removing it causes a Kotlin error in this file
@@ -97,14 +86,13 @@ class VolumeSlider{
 
         fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, _timerParams: TimerParameters, volImage: ImageView, timer: MainTimer?){
             timerParams=_timerParams
-            imgVolume = volImage
             targetVolSeekBar = volSlider
             greyedVolSeekBar = greyedSlider
             oldVolSeekBar=originalSlider
             setSliderMaxes()
             setAllSlidersToCurrent()
-            updateVolumeImage(timerParams)
-            setListeners(timer)
+            SpeakerIcon.updateVolumeImage(timerParams, volImage, maxVol)
+            setListeners(timer,volImage)
 
         }
 
