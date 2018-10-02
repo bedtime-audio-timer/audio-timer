@@ -36,55 +36,16 @@ class VolumeSlider{
             }
         }
 
-        fun setSliderMaxes(){
-            setVolumeSliderMax(targetVolSeekBar)
-            setVolumeSliderMax(greyedVolSeekBar)
-            setVolumeSliderMax(oldVolSeekBar)
-        }
-
         fun setAllSlidersToCurrent(){
             changeVolumeSliderToCurrent(targetVolSeekBar)
             changeVolumeSliderToCurrent(greyedVolSeekBar)
             changeVolumeSliderToCurrent(oldVolSeekBar)
         }
 
-        fun setListeners(timer: MainTimer?, imgVolume: ImageView){
-            targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
-                override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
-                    capVolume(targetVolSeekBar)
-                    if (timer!!.isRunning() && volSeekBar.progress== greyedVolSeekBar.progress){
-                        timer.cancelMainTimer()
-                    }
-                    timerParams.setVolume(volSeekBar.getProgress())
-                    SpeakerIcon.updateVolumeImage(timerParams, imgVolume, maxVol)
-                }
-                override fun onStartTrackingTouch(volSeekBar: SeekBar) {
-                    //Even though this is currently empty, removing it causes a Kotlin error in this file
-                }
-
-                override fun onStopTrackingTouch(volSeekBar: SeekBar) {
-                    //Even though this is currently empty, removing it causes a Kotlin error in this file
-                }
-            })
-
-            greyedVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
-                override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
-                    if (targetVolSeekBar.progress> greyedVolSeekBar.progress){
-                        targetVolSeekBar.progress= greyedVolSeekBar.progress
-                    }
-                    if (!timer!!.isRunning()){
-                        oldVolSeekBar.setProgress(greyedVolSeekBar.progress)
-                        resetAfterTimerCancel()
-                    }
-                }
-                override fun onStartTrackingTouch(volSeekBar: SeekBar) {
-                    //Even though this is currently empty, removing it causes a Kotlin error in this file
-                }
-
-                override fun onStopTrackingTouch(volSeekBar: SeekBar) {
-                    //Even though this is currently empty, removing it causes a Kotlin error in this file
-                }
-            })
+        fun setSliderMaxes(){
+            setVolumeSliderMax(targetVolSeekBar)
+            setVolumeSliderMax(greyedVolSeekBar)
+            setVolumeSliderMax(oldVolSeekBar)
         }
 
         fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, _timerParams: TimerParameters, volImage: ImageView, timer: MainTimer?){
@@ -95,8 +56,7 @@ class VolumeSlider{
             setSliderMaxes()
             setAllSlidersToCurrent()
             SpeakerIcon.updateVolumeImage(timerParams, volImage, maxVol)
-            setListeners(timer,volImage)
-
+            VolumeSliderListeners.setListeners(timer,volImage, targetVolSeekBar, greyedVolSeekBar, oldVolSeekBar)
         }
 
     }
