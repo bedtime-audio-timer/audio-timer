@@ -2,6 +2,7 @@ package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
 import android.provider.ContactsContract
+import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
 
@@ -9,7 +10,6 @@ import android.widget.SeekBar
 
 class VolumeSlider{
     companion object {
-
         var maxVol = AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         lateinit var greyedVolSeekBar: SeekBar
         lateinit var oldVolSeekBar: SeekBar
@@ -52,6 +52,9 @@ class VolumeSlider{
             targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
                     capVolume(targetVolSeekBar)
+                    if (timer!!.isRunning() && volSeekBar.progress== greyedVolSeekBar.progress){
+                        timer.cancelMainTimer()
+                    }
                     timerParams.setVolume(volSeekBar.getProgress())
                     SpeakerIcon.updateVolumeImage(timerParams, imgVolume, maxVol)
                 }
