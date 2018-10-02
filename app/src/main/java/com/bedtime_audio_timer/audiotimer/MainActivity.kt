@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)*/
 
         val imgVolume = findViewById(R.id.imgVolume) as ImageView
-        VolumeSlider.resetValues(targetVolSeekBar, greyedVolseekBar, originalVolseekBar, timerParams, imgVolume)
+        VolumeSlider.resetValues(targetVolSeekBar, greyedVolseekBar, originalVolseekBar, timerParams, imgVolume,mTimer)
 
     }
 

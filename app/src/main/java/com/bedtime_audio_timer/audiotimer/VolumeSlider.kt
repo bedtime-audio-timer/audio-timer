@@ -10,7 +10,6 @@ class VolumeSlider{
     companion object {
 
         var maxVol = AudioManagerSingleton.am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-
         lateinit var imgVolume: ImageView
         lateinit var greyedVolSeekBar: SeekBar
         lateinit var oldVolSeekBar: SeekBar
@@ -58,7 +57,7 @@ class VolumeSlider{
             changeVolumeSliderToCurrent(oldVolSeekBar)
         }
 
-        fun setListeners(){
+        fun setListeners(timer: MainTimer?){
             targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
                     capVolume(targetVolSeekBar)
@@ -79,6 +78,9 @@ class VolumeSlider{
                     if (targetVolSeekBar.progress> greyedVolSeekBar.progress){
                         targetVolSeekBar.progress= greyedVolSeekBar.progress
                     }
+                    if (!timer!!.isRunning()){
+                        oldVolSeekBar.setProgress(greyedVolSeekBar.progress)
+                    }
                 }
                 override fun onStartTrackingTouch(volSeekBar: SeekBar) {
                     //Even though this is currently empty, removing it causes a Kotlin error in this file
@@ -90,7 +92,7 @@ class VolumeSlider{
             })
         }
 
-        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, _timerParams: TimerParameters, volImage: ImageView){
+        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, _timerParams: TimerParameters, volImage: ImageView, timer: MainTimer?){
             timerParams=_timerParams
             imgVolume = volImage
             targetVolSeekBar = volSlider
@@ -99,7 +101,7 @@ class VolumeSlider{
             setSliderMaxes()
             setAllSlidersToCurrent()
             updateVolumeImage(timerParams)
-            setListeners()
+            setListeners(timer)
 
         }
 
