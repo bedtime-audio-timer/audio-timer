@@ -27,7 +27,7 @@ class VolumeSlider{
             }
         }
 
-        fun setTargetVolumeToMatchSlider(){
+        fun resetAfterTimerCancel(){
             timerParams.setVolume(targetVolSeekBar.progress)
         }
 
@@ -46,20 +46,19 @@ class VolumeSlider{
             }
         }
 
-        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, _timerParams: TimerParameters, volImage: ImageView){
-            timerParams=_timerParams
-            imgVolume = volImage
-            targetVolSeekBar = volSlider
-            greyedVolSeekBar = greyedSlider
-            oldVolSeekBar=originalSlider
+        fun setSliderMaxes(){
             setVolumeSliderMax(targetVolSeekBar)
-            changeVolumeSliderToCurrent(targetVolSeekBar)
             setVolumeSliderMax(greyedVolSeekBar)
-            changeVolumeSliderToCurrent(greyedVolSeekBar)
             setVolumeSliderMax(oldVolSeekBar)
-            changeVolumeSliderToCurrent(oldVolSeekBar)
-            updateVolumeImage(timerParams)
+        }
 
+        fun setAllSlidersToCurrent(){
+            changeVolumeSliderToCurrent(targetVolSeekBar)
+            changeVolumeSliderToCurrent(greyedVolSeekBar)
+            changeVolumeSliderToCurrent(oldVolSeekBar)
+        }
+
+        fun setListeners(){
             targetVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
                     capVolume(targetVolSeekBar)
@@ -89,6 +88,19 @@ class VolumeSlider{
                     //Even though this is currently empty, removing it causes a Kotlin error in this file
                 }
             })
+        }
+
+        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, _timerParams: TimerParameters, volImage: ImageView){
+            timerParams=_timerParams
+            imgVolume = volImage
+            targetVolSeekBar = volSlider
+            greyedVolSeekBar = greyedSlider
+            oldVolSeekBar=originalSlider
+            setSliderMaxes()
+            setAllSlidersToCurrent()
+            updateVolumeImage(timerParams)
+            setListeners()
+
         }
 
     }

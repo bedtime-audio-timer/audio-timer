@@ -1,15 +1,8 @@
 package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
-import android.service.autofill.Validators.and
 import android.util.Log
-import com.bedtime_audio_timer.audiotimer.AudioManagerSingleton.Companion.am
-import com.bedtime_audio_timer.audiotimer.R.drawable.timer
-import java.sql.Time
-import java.time.LocalDateTime
 import java.util.*
-import java.util.function.ToLongFunction
-import kotlin.concurrent.schedule
 
 class MainTimer {
 
@@ -133,7 +126,7 @@ class MainTimer {
         endTime = System.currentTimeMillis()
         timer?.cancel() //the ? is the safe call operator in Kotlin
         timer = null
-        VolumeSlider.setTargetVolumeToMatchSlider()
+        VolumeSlider.resetAfterTimerCancel()
         Log.d("TIMER ", "progress: " + getProgress().toString())
     }
 
