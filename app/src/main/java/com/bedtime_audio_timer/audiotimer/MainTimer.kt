@@ -133,6 +133,7 @@ class MainTimer {
         endTime = System.currentTimeMillis()
         timer?.cancel() //the ? is the safe call operator in Kotlin
         timer = null
+        VolumeSlider.setTargetVolumeToMatchSlider()
         Log.d("TIMER ", "progress: " + getProgress().toString())
     }
 

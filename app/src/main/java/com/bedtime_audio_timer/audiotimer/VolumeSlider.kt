@@ -14,6 +14,8 @@ class VolumeSlider{
         lateinit var imgVolume: ImageView
         lateinit var greyedVolSeekBar: SeekBar
         lateinit var oldVolSeekBar: SeekBar
+        lateinit var timerParams: TimerParameters
+
 
         fun updateVolumeImage(timerParams: TimerParameters) {
 
@@ -23,6 +25,10 @@ class VolumeSlider{
                 in maxVol/4+1..maxVol/2 -> imgVolume.setImageResource(R.drawable.volume_med)
                 else -> imgVolume.setImageResource(R.drawable.volume_max)
             }
+        }
+
+        fun setTargetVolumeToMatchSlider(){
+            timerParams.setVolume(targetVolSeekBar.progress)
         }
 
         lateinit var targetVolSeekBar: SeekBar
@@ -40,7 +46,8 @@ class VolumeSlider{
             }
         }
 
-        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, timerParams: TimerParameters, volImage: ImageView){
+        fun resetValues(volSlider: SeekBar, greyedSlider: SeekBar, originalSlider: SeekBar, _timerParams: TimerParameters, volImage: ImageView){
+            timerParams=_timerParams
             imgVolume = volImage
             targetVolSeekBar = volSlider
             greyedVolSeekBar = greyedSlider
