@@ -74,6 +74,21 @@ class VolumeSlider{
                     //Even though this is currently empty, removing it causes a Kotlin error in this file
                 }
             })
+
+            greyedVolSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+                override fun onProgressChanged(volSeekBar: SeekBar, p1: Int, p2: Boolean) {
+                    if (targetVolSeekBar.progress> greyedVolSeekBar.progress){
+                        targetVolSeekBar.progress= greyedVolSeekBar.progress
+                    }
+                }
+                override fun onStartTrackingTouch(volSeekBar: SeekBar) {
+                    //Even though this is currently empty, removing it causes a Kotlin error in this file
+                }
+
+                override fun onStopTrackingTouch(volSeekBar: SeekBar) {
+                    //Even though this is currently empty, removing it causes a Kotlin error in this file
+                }
+            })
         }
 
     }
