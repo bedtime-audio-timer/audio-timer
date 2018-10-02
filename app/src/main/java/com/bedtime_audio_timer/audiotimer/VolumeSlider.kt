@@ -26,6 +26,7 @@ class VolumeSlider{
             }
         }
 
+        //since this function is no longer only called after timer cancel it should be renamed in near future.
         fun resetAfterTimerCancel(){
             timerParams.setVolume(targetVolSeekBar.progress)
             changeVolumeSliderToCurrent(oldVolSeekBar)
@@ -81,6 +82,7 @@ class VolumeSlider{
                     }
                     if (!timer!!.isRunning()){
                         oldVolSeekBar.setProgress(greyedVolSeekBar.progress)
+                        resetAfterTimerCancel()
                     }
                 }
                 override fun onStartTrackingTouch(volSeekBar: SeekBar) {
