@@ -377,4 +377,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         timerProgress = null
     }
 
+    fun tempOnClickWN(view: View?){ //temporary testing function
+        WhiteNoise.generateWhiteNoise()
+    }
 }
