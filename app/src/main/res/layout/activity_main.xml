@@ -101,7 +101,7 @@
 
     <SeekBar
         android:id="@+id/originalVolseekBar"
-        android:layout_width="242dp"
+        android:layout_width="232dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -121,7 +121,7 @@
 
     <SeekBar
         android:id="@+id/greyedVolseekBar"
-        android:layout_width="242dp"
+        android:layout_width="232dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -141,7 +141,7 @@
 
     <SeekBar
         android:id="@+id/targetVolSeekBar"
-        android:layout_width="242dp"
+        android:layout_width="232dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
