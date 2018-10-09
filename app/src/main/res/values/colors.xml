@@ -13,4 +13,5 @@
     <color name="colorTitle">#ffab40</color>
     <color name="colorValue">#FFAAAAAA</color>
     <color name="greyedOut">#705131</color>
+    <color name="original">#000000</color>
 </resources>
