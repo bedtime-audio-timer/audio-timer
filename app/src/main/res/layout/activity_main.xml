@@ -12,22 +12,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.53" />
+        app:layout_constraintGuide_percent="0.62" />
 
     <TextView
         android:id="@+id/textTimer"
         style="@style/ValueText"
-        android:layout_width="0dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="222dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:gravity="end"
         android:text="00:50"
-        android:textAlignment="center"
+        android:textAlignment="textEnd"
         android:textSize="45sp"
         app:layout_constraintBottom_toBottomOf="@+id/circularProgressbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/textSeconds"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/circularProgressbar" />
 
@@ -54,10 +53,10 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:contentDescription="Increase Minutes"
         android:onClick="increaseMinutes"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.568"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTimer"
         app:srcCompat="@android:drawable/arrow_up_float" />
@@ -74,9 +73,43 @@
         android:onClick="decreaseMinutes"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.568"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgBtnTimerUp"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.054"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageButton
+        android:id="@+id/imgBtnHoursUp"
+        style="@style/UpArrowButton"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="Increase Hours"
+        android:onClick="increaseHours"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTimer"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageButton
+        android:id="@+id/imgBtnHoursDown"
+        style="@style/DownArrowButton"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="Decrease Hours"
+        android:onClick="decreaseHours"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnTimerUp"
+        app:layout_constraintVertical_bias="0.04"
         app:srcCompat="@android:drawable/arrow_down_float" />
 
     <ImageButton
@@ -164,8 +197,8 @@
 
         android:id="@+id/circularProgressbar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="356dp"
-        android:layout_height="284dp"
+        android:layout_width="366dp"
+        android:layout_height="335dp"
         android:layout_centerInParent="true"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -192,11 +225,31 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="hh        mm        ss"
+        android:layout_marginTop="20dp"
+        android:text="hh             mm                "
         android:textColor="@color/colorValue"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/textTimer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.601"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgBtnHoursUp" />
+
+    <TextView
+        android:id="@+id/textSeconds"
+        style="@style/ValueText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        android:text="39"
+        android:textAlignment="textStart"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textTimer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textTimer"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

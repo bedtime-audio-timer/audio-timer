@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/secondaryProgress">
         <shape
-            android:innerRadiusRatio="3"
+            android:innerRadiusRatio="2.8"
             android:shape="ring"
             android:thicknessRatio="30.0"
             android:useLevel="true">
@@ -24,7 +24,7 @@
             android:toDegrees="270">
 
             <shape
-                android:innerRadiusRatio="3"
+                android:innerRadiusRatio="2.8"
                 android:shape="ring"
                 android:thicknessRatio="30.0"
                 android:useLevel="true">

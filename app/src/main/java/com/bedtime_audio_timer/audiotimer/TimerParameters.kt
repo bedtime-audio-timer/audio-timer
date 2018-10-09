@@ -97,6 +97,18 @@ class TimerParameters (val Running : Boolean = false) {
         }
     }
 
+    fun increaseHours() {
+        if (millis < 60000 * 60 * 23) {
+            millis += minutesIncrement * 60000 * 60
+        }
+    }
+
+    fun decreaseHours() {
+        if (millis > 60000 * 60) {
+            millis -= minutesIncrement * 60000 * 60
+        }
+    }
+
     fun setVolume(vol: Int){
         volume=vol
     }

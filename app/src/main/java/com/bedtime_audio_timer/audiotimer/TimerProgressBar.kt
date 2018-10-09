@@ -44,7 +44,7 @@ class TimerProgressBar{
             // val res = resources
             // val drawable = res.getDrawable(R.drawable.circular)
             // val mProgress = findViewById<View>(R.id.circularProgressbar) as ProgressBar
-            prBar.progress = 100//100   // Main Progress
+            prBar.progress = 0//100   // Main Progress
             prBar.secondaryProgress = 100 // Secondary Progress
 //            prBar.max = 0//100 // Maximum Progress
             // progBar.progressDrawable = drawable

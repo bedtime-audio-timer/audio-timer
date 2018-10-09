@@ -39,28 +39,25 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
     // enum that defines what button is hold so the TimerRunnable object could increases/decreases volume/minutes
     enum class ButtonAction {
-        VOLUME_UP, VOLUME_DOWN, TIMER_UP, TIMER_DOWN
+        HOUR_UP, HOUR_DOWN, TIMER_UP, TIMER_DOWN
     }
 
     // class for to update view from the timer thread when a button is hold
     internal inner class TimerRunnable : Runnable {
 
-        var buttonAction: ButtonAction = ButtonAction.VOLUME_UP
+        var buttonAction: ButtonAction = ButtonAction.HOUR_UP
 
         override fun run() {
-            if (buttonAction == ButtonAction.VOLUME_UP)
-            /*timerParams.*/ //increaseVolume()
-            else if (buttonAction == ButtonAction.VOLUME_DOWN)
-            /*timerParams.*/ //decreaseVolume()
+            if (buttonAction == ButtonAction.HOUR_UP)
+                timerParams.increaseHours()
+            else if (buttonAction == ButtonAction.HOUR_DOWN)
+                timerParams.decreaseHours()
             else if (buttonAction == ButtonAction.TIMER_UP)
                 timerParams.increaseMinutes()
             else if (buttonAction == ButtonAction.TIMER_DOWN)
                 timerParams.decreaseMinutes()
 
-            if (buttonAction == ButtonAction.VOLUME_UP || buttonAction == ButtonAction.VOLUME_DOWN)
-                //updateVolumeTextView()
-            else
-                updateMinutesTextView(timerParams.getSeconds())
+            updateMinutesTextView(timerParams.getSeconds())
         }
 
     }
@@ -68,7 +65,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     // class for listeners when a button is hold
     internal inner class TimerOnTouchListener : View.OnTouchListener {
 
-        var buttonAction: ButtonAction = ButtonAction.VOLUME_UP
+        var buttonAction: ButtonAction = ButtonAction.HOUR_UP
 
         override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
             if (motionEvent.action == MotionEvent.ACTION_UP) {
@@ -234,7 +231,8 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         seconds_format = (seconds - hours_format * 3600 - minutes_format * 60) % 60//timerParams.getMinutes() % 60
 
 
-        textTimer.text = (String.format("%02d:%02d:%02d", hours_format, minutes_format, seconds_format))
+        textTimer.text = (String.format("%02d:%02d", hours_format, minutes_format))
+        textSeconds.text = (String.format("%02d", seconds_format))
 
     }
 
@@ -245,6 +243,16 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
     fun decreaseMinutes(view: View?) {
         timerParams.decreaseMinutes()
+        updateMinutesTextView(timerParams.getSeconds())
+    }
+
+    fun increaseHours(view: View?) {
+        timerParams.increaseHours()
+        updateMinutesTextView(timerParams.getSeconds())
+    }
+
+    fun decreaseHours(view: View?) {
+        timerParams.decreaseHours()
         updateMinutesTextView(timerParams.getSeconds())
     }
 
