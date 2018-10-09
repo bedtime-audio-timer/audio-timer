@@ -3,5 +3,5 @@
     <string name="halveTitle">1/2 VOL</string>
     <string name="VolumeLable">Decrease Volume to</string>
     <string name="TimerLabel">over</string>
-    <string name="white_noise_setting">Enable White Noise</string>
+    <string name="white_noise_setting">Add White Noise</string>
 </resources>
