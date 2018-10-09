@@ -7,6 +7,7 @@ import com.bedtime_audio_timer.audiotimer.R.drawable.volume
 class TimerParameters (val Running : Boolean = false) {
     private var volume: Int = 0
     private var millis: Long = 0
+    private var leftMills: Long = 0
     private var running: Boolean = false
 
     init {
@@ -21,17 +22,27 @@ class TimerParameters (val Running : Boolean = false) {
     fun loadFromBundle(state: Bundle){ // to restore the values when activity is recreated after configuration change
         volume = state.getInt("reply_volume" + running.toString())
         millis = state.getLong("reply_minutes" + running.toString())
-
+        leftMills = state.getLong("reply_progress" + running.toString())
     }
 
-    fun saveFromBundle(state: Bundle){ // to save the values when activity is destroyed on configuration change
+    fun saveToBundle(state: Bundle){ // to save the values when activity is destroyed on configuration change
         state.putInt("reply_volume" + running.toString(), volume)
         state.putLong("reply_minutes" + running.toString(), millis)
+        state.putLong("reply_progress" + running.toString(), leftMills)
     }
 
     fun set(mil: Long, vol: Int){
+        leftMills = mil
         millis = mil
         volume = vol
+    }
+
+    fun setLeftMills(mil: Long){
+        leftMills = leftMills - mil
+    }
+
+    fun getLeftMills(): Long{
+        return leftMills
     }
 
     fun setMillis(mil: Long){
