@@ -99,26 +99,6 @@
         app:layout_constraintTop_toBottomOf="@+id/targetVolSeekBar"
         app:srcCompat="@drawable/start" />
 
-    <SeekBar
-        android:id="@+id/originalVolseekBar"
-        android:layout_width="232dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:thumb="@drawable/fullmoon"
-        android:thumbTint="@color/original"
-        android:progressTint="@color/greyedOut"
-        android:progressBackgroundTint="@color/sliderBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imgVolume"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="0.206" />
 
     <SeekBar
         android:id="@+id/greyedVolseekBar"
@@ -133,7 +113,26 @@
         android:thumb="@drawable/halfmoon"
         android:progressTint="@color/greyedOut"
         android:progressBackgroundTint="@color/sliderBackground"
-        android:thumbTint="@color/greyedOut"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgVolume"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.206" />
+
+    <SeekBar
+        android:id="@+id/originalVolseekBar"
+        android:layout_width="232dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:thumb="@drawable/fullmoon"
+        android:progressTint="@color/greyedOut"
+        android:progressBackgroundTint="@color/sliderBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -154,7 +153,6 @@
         android:thumb="@drawable/crescentmoon"
         android:progressTint="@color/colorPrimary"
         android:progressBackgroundTint="@color/sliderBackground"
-        android:thumbTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
