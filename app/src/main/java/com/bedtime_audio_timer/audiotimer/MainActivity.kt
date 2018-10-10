@@ -266,6 +266,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     }
 
     fun toggleTimer(view: View) { //suggesting this be renamed in the upcoming refactor to reflect fact that it now starts or stops timer (toggleTimer perhaps?)
+        VolumeSlider.realignMoons()
         if (mTimer?.isRunning()!!) {
             val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
             myToast.show() //delete this Toast when interface makes cancellation clear.
