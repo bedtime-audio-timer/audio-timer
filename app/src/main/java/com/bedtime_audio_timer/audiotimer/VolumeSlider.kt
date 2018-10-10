@@ -1,5 +1,6 @@
 package com.bedtime_audio_timer.audiotimer
 
+import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.provider.ContactsContract
 import android.view.View
@@ -17,6 +18,7 @@ class VolumeSlider{
 
         fun realignMoons(){
             oldVolSeekBar.progress = greyedVolSeekBar.progress
+            greyedVolSeekBar.setVisibility(View.INVISIBLE)
         }
 
         //since this function is no longer only called after timer cancel it should be renamed in near future.

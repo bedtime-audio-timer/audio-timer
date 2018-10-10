@@ -1,5 +1,6 @@
 package com.bedtime_audio_timer.audiotimer
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
 
@@ -34,6 +35,9 @@ class VolumeSliderListeners {
                     if (!timer!!.isRunning()){
                         oldVolSeekBar.setProgress(greyedVolSeekBar.progress)
                         VolumeSlider.resetAfterTimerCancel()
+                    }
+                    if (greyedVolSeekBar.progress!=oldVolSeekBar.progress){
+                        VolumeSlider.greyedVolSeekBar.setVisibility(View.VISIBLE)
                     }
                 }
                 override fun onStartTrackingTouch(volSeekBar: SeekBar) {
