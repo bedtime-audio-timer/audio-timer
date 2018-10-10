@@ -15,6 +15,10 @@ class VolumeSlider{
         lateinit var oldVolSeekBar: SeekBar
         lateinit var timerParams: TimerParameters
 
+        fun realignMoons(){
+            oldVolSeekBar.progress = greyedVolSeekBar.progress
+        }
+
         //since this function is no longer only called after timer cancel it should be renamed in near future.
         fun resetAfterTimerCancel(){
             timerParams.setVolume(targetVolSeekBar.progress)
