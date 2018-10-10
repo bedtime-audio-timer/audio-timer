@@ -112,9 +112,9 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 updateTimerButtonImage()
             } else if (motionEvent.action == MotionEvent.ACTION_DOWN) {
                 if (!mTimer?.isRunning()!!) {
-                    imgBtnMain.setImageResource(R.drawable.start_pressed2)
+                    imgBtnMain.setImageResource(R.drawable.start_word_pressed2)
                 } else {
-                    imgBtnMain.setImageResource(R.drawable.stop_pressed2)
+                    imgBtnMain.setImageResource(R.drawable.stop_word_pressed2)
                 }
             }
             false
@@ -259,9 +259,9 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     fun updateTimerButtonImage() {
         val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
         if (mTimer?.isRunning()!!) {
-            imgBtnMain.setImageResource(R.drawable.stop)
+            imgBtnMain.setImageResource(R.drawable.stop_word1)
         } else {
-            imgBtnMain.setImageResource(R.drawable.start)
+            imgBtnMain.setImageResource(R.drawable.start_word1)
         }
     }
 
