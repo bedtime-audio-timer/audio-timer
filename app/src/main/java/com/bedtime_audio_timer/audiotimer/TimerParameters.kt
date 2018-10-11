@@ -8,6 +8,8 @@ class TimerParameters (val Running : Boolean = false) {
     private var volume: Int = 0
     private var millis: Long = 0
     private var leftMills: Long = 0
+    private var startTime: Long = 0
+    private var startVolume: Int = 0
     private var running: Boolean = false
 
     init {
@@ -35,6 +37,19 @@ class TimerParameters (val Running : Boolean = false) {
         leftMills = mil
         millis = mil
         volume = vol
+    }
+
+    fun setStartParams(){
+        startTime = System.currentTimeMillis()//Calendar.getInstance().timeInMillis //LocalDateTime.now()
+        startVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
+    }
+
+    fun getStartTime(): Long{
+        return startTime
+    }
+
+    fun getStartVolume(): Int{
+        return startVolume
     }
 
     fun setLeftMills(mil: Long){

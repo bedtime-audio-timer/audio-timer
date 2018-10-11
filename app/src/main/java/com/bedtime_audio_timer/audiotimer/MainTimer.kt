@@ -20,7 +20,11 @@ class MainTimer {
 
     var timer: Timer? = null //refers to the main timer for the application
     val subscribers = mutableListOf<TimerCallback>()
+
+/*  //moved to timertParams
     var startTime: Long = 0//Calendar? = null
+    var startVolume: Int = 0
+*/
     var endTime: Long = 0//Calendar? = null
 
     fun isRunning(): Boolean {
@@ -43,12 +47,16 @@ class MainTimer {
 //        val numIntervals: Int = AudioTimerMath.findNumIntervals(timerParams)
   //      val numMinutes=timerParams.getMinutes()
         timer = Timer("interval timer", false)
-        startTime = System.currentTimeMillis()//Calendar.getInstance().timeInMillis //LocalDateTime.now()
-        endTime = startTime
+        timerParams.setStartParams()
+        /*
+        //moved to timerParams
 
-      //  var intervalLength = AudioTimerMath.findEqualIntervalsInMilliseconds(numMinutes, numIntervals)
-        val startVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
-        var nextVolume = startVolume
+        startTime = System.currentTimeMillis()//
+        startVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
+        */
+
+        endTime = timerParams.getStartTime()
+        var nextVolume = timerParams.getStartVolume()
         //var currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 
         // formula: volume at any time of the timer
@@ -60,10 +68,10 @@ class MainTimer {
                 override fun run() {
 
                     val currentTime = System.currentTimeMillis()// Calendar.getInstance().timeInMillis
-                    val timePassed = currentTime - startTime
+                    val timePassed = currentTime - timerParams.getStartTime()
                     val currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-                    nextVolume = (startVolume + (timerParams.getVolume() - startVolume).toDouble()/timerParams.getMillis().toDouble() * timePassed).toInt()
+                    nextVolume = (timerParams.getStartVolume() + (timerParams.getVolume() - timerParams.getStartVolume()).toDouble()/timerParams.getMillis().toDouble() * timePassed).toInt()
 
                     if ((nextVolume < timerParams.getVolume())||(timerParams.getMillis() < 0)){
                         nextVolume = timerParams.getVolume()
@@ -82,7 +90,7 @@ class MainTimer {
                         AudioManagerSingleton.am.setVolume(nextVolume)
                     }
 
-                    if (timePassed >= timerParams.getMillis()) {
+                    if (timePassed >= timerParams.getMillis()) { // if time is over or current system volume is
                         Log.d("TIMER ", "cancel with volume " + AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC).toString() + " and time passed " + timePassed.toString())
 
                         cancelMainTimer()
@@ -127,15 +135,15 @@ class MainTimer {
         timer?.cancel() //the ? is the safe call operator in Kotlin
         timer = null
         VolumeSlider.resetAfterTimerCancel()
-        Log.d("TIMER ", "progress: " + getProgress().toString())
+        //Log.d("TIMER ", "progress: " + getProgress().toString())
     }
 
-    fun getProgress(): Long{
+    fun getProgress(timerParams: TimerParameters): Long{
         if(isRunning()){
-            return System.currentTimeMillis() - startTime
+            return System.currentTimeMillis() - timerParams.getStartTime()
         }
         else {
-            return endTime - startTime
+            return endTime - timerParams.getStartTime()
         }
     }
 }

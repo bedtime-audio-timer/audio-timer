@@ -318,7 +318,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 // update slider!!!
                 //updateVolumeTextView()
                 VolumeSlider.changeVolumeSliderToCurrent(greyedVolseekBar)
-                TimerProgressBar.setProgress(((timerRunningParams.getLeftMills() - mTimer?.getProgress()!!)/1000).toInt())
+                TimerProgressBar.setProgress(((timerRunningParams.getLeftMills() - mTimer?.getProgress(timerRunningParams)!!)/1000).toInt())
             }
         })
     }
@@ -341,17 +341,27 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 if (mTimer?.isRunning()!!) {
                     //  if volume is increased: recalculate timer by default, remind user they can cancel timer
                     //  if volume is decreased but higher then target: recalculate timer by default, remind user they can cancel timer
+                    Log.d("MainActivity ", "timer is running")
+
                     if (newVolume > timerRunningParams.getVolume()) {
 
-                       mTimer?.cancelMainTimer()
+                        timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress(timerRunningParams)!!)
+                        timerRunningParams.setLeftMills(mTimer?.getProgress(timerRunningParams)!!)
+                        timerRunningParams.setStartParams() //startTime + startVolume
+                        Log.d("MainActivity ", "recalculating")
+                        val myToast = Toast.makeText(this@MainActivity, "Volume is changed, timer is recalculated", Toast.LENGTH_SHORT)
 
-                       cancelCheckingProgress()
-                       timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress()!!)
-                       timerRunningParams.setLeftMills(mTimer?.getProgress()!!)
-                       Log.d("MainActivity ", "recalculating")
-                       val myToast = Toast.makeText(this@MainActivity, "Volume is changed, timer is recalculated", Toast.LENGTH_SHORT)
-                       mTimer?.startMainTimer(timerRunningParams)
-                       startCheckingProgress()
+                        /*
+                        mTimer?.cancelMainTimer()
+
+                        cancelCheckingProgress()
+                        timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress(timerRunningParams)!!)
+                        timerRunningParams.setLeftMills(mTimer?.getProgress(timerRunningParams)!!)
+                        Log.d("MainActivity ", "recalculating")
+                        val myToast = Toast.makeText(this@MainActivity, "Volume is changed, timer is recalculated", Toast.LENGTH_SHORT)
+                        mTimer?.startMainTimer(timerRunningParams)
+                        startCheckingProgress()
+                        */
                     }
                     else if (newVolume <= timerRunningParams.getVolume()){
                         mTimer?.cancelMainTimer()
@@ -387,7 +397,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
             handlerProgress.post(object : Runnable{
                 override fun run() {
-                    var tmp = ((timerRunningParams.getLeftMills() - mTimer?.getProgress()!!)/1000).toInt()
+                    var tmp = ((timerRunningParams.getLeftMills() - mTimer?.getProgress(timerRunningParams)!!)/1000).toInt()
                     TimerProgressBar.setProgress(tmp)
                     //circularProgressbar.progress = tmp
                     updateMinutesTextView(tmp)
