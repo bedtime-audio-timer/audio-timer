@@ -58,6 +58,7 @@ class VolumeSliderListeners {
                             VolumeSlider.greyedVolSeekBar.setVisibility(View.VISIBLE)
                             if (greyedVolSeekBar.progress>oldVolSeekBar.progress){
                                 oldVolSeekBar.progress=greyedVolSeekBar.progress
+                                greyedVolSeekBar.setVisibility(View.INVISIBLE)
                             }
                         }
                     }
