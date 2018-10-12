@@ -2,35 +2,27 @@ package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
 import android.util.Log
-import com.bedtime_audio_timer.audiotimer.R.drawable.timer
 import java.util.*
 
 class MainTimer {
-
-    private var timerIsRunning: Boolean = false
 
     public interface TimerCallback {
         fun onTimerFinished()
         fun onVolumeChange(newVolume: Int)
     }
-/*
-    public interface AppTimerCallback {
-        fun onVolumeChange(newVolume: Int)
-    }
-*/
 
     var timer: Timer? = null //refers to the main timer for the application
     val subscribers = mutableListOf<TimerCallback>()
 
 /*  //moved to timerParams
-    var startTime: Long = 0//Calendar? = null
+    var startTime: Long = 0
     var startVolume: Int = 0
 */
     lateinit var params: TimerParameters
-    var endTime: Long = 0//Calendar? = null
+    private var endTime: Long = 0
 
     fun isRunning(): Boolean {
-        return (timer != null);
+        return (timer != null)
     }
 
     fun subscribe(cb: TimerCallback?){
@@ -49,9 +41,7 @@ class MainTimer {
         subscribers.clear()
     }
 
-    fun startMainTimer(timerParams: TimerParameters/*, vlcb: AppTimerCallback*/){
-//        val numIntervals: Int = AudioTimerMath.findNumIntervals(timerParams)
-  //      val numMinutes=timerParams.getMinutes()
+    fun startMainTimer(timerParams: TimerParameters){
         timer = Timer("interval timer", false)
         params = timerParams
         params.setStartParams()
@@ -64,7 +54,6 @@ class MainTimer {
 
         endTime = params.getStartTime()
         var nextVolume = params.getStartVolume()
-        //var currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 
         // formula: volume at any time of the timer
         // v = startVolume + (targetVolume - startVolume)/target minutes * t
@@ -74,7 +63,7 @@ class MainTimer {
         timer?.schedule(object : TimerTask() {
                 override fun run() {
 
-                    val currentTime = System.currentTimeMillis()// Calendar.getInstance().timeInMillis
+                    val currentTime = System.currentTimeMillis()
                     val timePassed = currentTime - params.getStartTime()
                     val currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 

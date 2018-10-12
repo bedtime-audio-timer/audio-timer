@@ -3,7 +3,6 @@ package com.bedtime_audio_timer.audiotimer
 import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -11,7 +10,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import com.bedtime_audio_timer.audiotimer.R.drawable.volume
-//import com.bedtime_audio_timer.audiotimer.R.id.timerProgressBar
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -22,7 +20,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
     private var mTimer: MainTimer? = null
     private var outsideVolumeListener: OutsideVolumeListener? = null
-    //private var timerProgressBar = TimerProgressBar()
 
     private var timer: Timer? = null // this object is used to increases/decreases volume/minutes when a button is hold
     private lateinit var timerTask: TimerTask
@@ -30,8 +27,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
     private var timerParams = TimerParameters()
     private var timerRunningParams = TimerParameters(true)
-
-    internal var pStatus = 100
 
     private val handlerProgress = Handler()
     internal lateinit var tv: TextView

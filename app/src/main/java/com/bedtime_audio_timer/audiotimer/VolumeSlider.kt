@@ -61,7 +61,7 @@ class VolumeSlider{
             oldVolSeekBar=originalSlider
             setSliderMaxes()
             setAllSlidersToCurrent()
-            SpeakerIcon.updateVolumeImage(timerParams, volImage, maxVol)
+            SpeakerIcon.updateVolumeImage(timerParams.getVolume(), volImage, maxVol)
             VolumeSliderListeners.setListeners(timer,volImage, targetVolSeekBar, greyedVolSeekBar, oldVolSeekBar)
         }
 

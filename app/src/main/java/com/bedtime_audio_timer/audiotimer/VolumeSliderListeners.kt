@@ -18,7 +18,7 @@ class VolumeSliderListeners {
                     }*/
                     // moving setVolume to onStopTrackingTouch
                     //VolumeSlider.timerParams.setVolume(volSeekBar.getProgress())
-                    SpeakerIcon.updateVolumeImage(VolumeSlider.timerParams, imgVolume, VolumeSlider.maxVol)
+                    SpeakerIcon.updateVolumeImage(/*VolumeSlider.timerParams*/volSeekBar.progress, imgVolume, VolumeSlider.maxVol)
                 }
                 override fun onStartTrackingTouch(volSeekBar: SeekBar) {
                     //Even though this is currently empty, removing it causes a Kotlin error in this file
@@ -26,19 +26,18 @@ class VolumeSliderListeners {
 
                 override fun onStopTrackingTouch(volSeekBar: SeekBar) {
 
-                    SpeakerIcon.updateVolumeImage(VolumeSlider.timerParams, imgVolume, VolumeSlider.maxVol)
-                    VolumeSlider.timerParams.setVolume(volSeekBar.getProgress())
+                    VolumeSlider.timerParams.setVolume(volSeekBar.progress)
 
                     if (timer!!.isRunning()){
-                        var params = timer!!.getParameters()
-                        Log.d("VolumeSliderListener ", "Old Params " + (params.getMillis()).toString() + ' ' + (params?.getLeftMills()).toString() + ' ' + (params?.getVolume()).toString() + ' ' + (params?.getStartVolume()).toString() + ' ' + (params?.getStartTime()).toString())
-                        params.setVolume(volSeekBar.getProgress())
+                        var params = timer.getParameters()
+                        Log.d("VolumeSliderListener ", "Old Params " + (params.getMillis()).toString() + ' ' + (params.getLeftMills()).toString() + ' ' + (params.getVolume()).toString() + ' ' + (params.getStartVolume()).toString() + ' ' + (params.getStartTime()).toString())
+                        params.setVolume(volSeekBar.progress)
                         //params?.setStartTime()
-                        params.setMillis(params.getMillis() - timer!!.getProgress()!!)
+                        params.setMillis(params.getMillis() - timer.getProgress())
                         params.setLeftMills(timer.getProgress())
                         params.setStartParams()
                         Log.d("VolumeSliderListener ", "updating RunningParams")
-                        Log.d("VolumeSliderListener ", "New Params " + (params?.getMillis()).toString() + ' ' + (params?.getLeftMills()).toString() + ' ' + (params?.getVolume()).toString() + ' ' + (params?.getStartVolume()).toString() + ' ' + (params?.getStartTime()).toString())
+                        Log.d("VolumeSliderListener ", "New Params " + (params.getMillis()).toString() + ' ' + (params.getLeftMills()).toString() + ' ' + (params.getVolume()).toString() + ' ' + (params.getStartVolume()).toString() + ' ' + (params.getStartTime()).toString())
 
                     }
                 }
