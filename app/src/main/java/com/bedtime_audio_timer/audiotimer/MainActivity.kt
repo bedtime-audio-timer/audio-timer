@@ -94,14 +94,13 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         if (savedInstanceState != null) {
             timerParams.loadFromBundle(savedInstanceState)
             timerRunningParams.loadFromBundle(savedInstanceState)
- //           timerProgressBar.loadFromBundle(savedInstanceState)
-        } else {
+        }
+        else {
             timerParams.loadInitialSetting()
             timerRunningParams.loadInitialSetting()
             TimerProgressBar.resetValues()
         }
 
-        //updateVolumeTextView()
         updateMinutesTextView(timerParams.getSeconds())
         updateTimerButtonImage()
 
@@ -120,17 +119,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             false
         })
 
-/*
-        val viewVolumeUp = findViewById<View>(R.id.imgBtnVolumeUp) as View
-        val timerOnTouchListenerVolumeUp = TimerOnTouchListener()
-        timerOnTouchListenerVolumeUp.buttonAction = ButtonAction.VOLUME_UP
-        imgBtnVolumeUp.setOnTouchListener(timerOnTouchListenerVolumeUp)
-
-        val viewVolumeDown = findViewById<View>(R.id.imgBtnVolumeDown) as View
-        val timerOnTouchListenerVolumeDown = TimerOnTouchListener()
-        timerOnTouchListenerVolumeDown.buttonAction = ButtonAction.VOLUME_DOWN
-        viewVolumeDown.setOnTouchListener(timerOnTouchListenerVolumeDown)
-*/
         val viewTimerUp = findViewById<View>(R.id.imgBtnTimerUp) as View
         val timerOnTouchListenerTimerUp = TimerOnTouchListener()
         timerOnTouchListenerTimerUp.buttonAction = ButtonAction.TIMER_UP
@@ -141,44 +129,22 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         timerOnTouchListenerTimerDown.buttonAction = ButtonAction.TIMER_DOWN
         viewTimerDown.setOnTouchListener(timerOnTouchListenerTimerDown)
 
+        val viewHoursUp = findViewById<View>(R.id.imgBtnHoursUp) as View
+        val timerOnTouchListenerHoursUp = TimerOnTouchListener()
+        timerOnTouchListenerHoursUp.buttonAction = ButtonAction.HOUR_UP
+        viewHoursUp.setOnTouchListener(timerOnTouchListenerHoursUp)
+
+        val viewHoursDown = findViewById<View>(R.id.imgBtnHoursDown) as View
+        val timerOnTouchListenerHoursDown = TimerOnTouchListener()
+        timerOnTouchListenerHoursDown.buttonAction = ButtonAction.HOUR_DOWN
+        viewHoursDown.setOnTouchListener(timerOnTouchListenerHoursDown)
+
         val imgVolume = findViewById(R.id.imgVolume) as ImageView
         VolumeSlider.resetValues(targetVolSeekBar, greyedVolseekBar, originalVolseekBar, timerParams, imgVolume,mTimer)
-
-        // TimerProgressBar.resetValues(circularProgressbar, 100)
 
         val res = resources
         val drawable = res.getDrawable(R.drawable.circular)
         circularProgressbar.progressDrawable = drawable
-
-/*        val mProgress = findViewById<View>(R.id.circularProgressbar) as ProgressBar
-        mProgress.progress = 0   // Main Progress
-        mProgress.secondaryProgress = 100 // Secondary Progress
-        mProgress.max = 100 // Maximum Progress
-        mProgress.progressDrawable = drawable
-
-
-        tv = findViewById<View>(R.id.tv) as TextView
-        Thread(Runnable {
-            // TODO Auto-generated method stub
-            while (pStatus > 0) {
-                pStatus -= 1
-
-                handler.post {
-                    // TODO Auto-generated method stub
-                    mProgress.progress = pStatus//(mTimer?.getProgress()!!*100/timerRunningParams.getMillis()).toInt()//pStatus
-                    tv.text = pStatus.toString() + "%"
-                }
-                try {
-                    // Sleep for 200 milliseconds.
-                    // Just to display the progress slowly
-                    Thread.sleep(25) //thread will take approx 3 seconds to finish
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-
-            }
-        }).start()
-*/
     }
 
     override fun onDestroy() {
@@ -191,7 +157,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
         timerParams.saveToBundle(outState)
         timerRunningParams.saveToBundle(outState)
-//        timerProgressBar.saveToBundle(outState)
     }
 
     fun startTimer(btnAct: ButtonAction) {
@@ -257,11 +222,19 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     }
 
     fun updateTimerButtonImage() {
-        val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
+        //val imgBtnMain = findViewById<View>(R.id.btnMain) as ImageButton
         if (mTimer?.isRunning()!!) {
-            imgBtnMain.setImageResource(R.drawable.stop_word1)
+            btnMain.setImageResource(R.drawable.stop_word1)
+            imgBtnTimerUp.isEnabled = false
+            imgBtnTimerDown.isEnabled = false
+            imgBtnHoursUp.isEnabled = false
+            imgBtnHoursDown.isEnabled = false
         } else {
-            imgBtnMain.setImageResource(R.drawable.start_word1)
+            btnMain.setImageResource(R.drawable.start_word1)
+            imgBtnTimerUp.isEnabled = true
+            imgBtnTimerDown.isEnabled = true
+            imgBtnHoursUp.isEnabled = true
+            imgBtnHoursDown.isEnabled = true
         }
     }
 
@@ -270,7 +243,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         if (mTimer?.isRunning()!!) {
             val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
             myToast.show() //delete this Toast when interface makes cancellation clear.
-//            mTimer?.unsubscribe(this)
             mTimer?.cancelMainTimer()
             cancelCheckingProgress()
             TimerProgressBar.resetValues()
@@ -284,10 +256,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         {
             timerRunningParams.set(timerParams.getMillis(), timerParams.getVolume())
 
- /*           circularProgressbar.max = (timerRunningParams.getMillis()/1000).toInt()
-            circularProgressbar.progress = (timerRunningParams.getMillis()/1000).toInt()//0   // Main Progress
-            circularProgressbar.secondaryProgress = (timerRunningParams.getMillis()/1000).toInt() // Secondary Progress
-*/
             TimerProgressBar.setMaxValues((timerRunningParams.getMillis()/1000).toInt())
             mTimer?.startMainTimer(timerRunningParams)
             startCheckingProgress()
@@ -303,6 +271,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 updateTimerButtonImage()
                 updateProgress()
                 updateMinutesTextView(timerParams.getSeconds())
+                VolumeSlider.resetAfterTimerCancel()
             }
         })
     }
@@ -315,10 +284,8 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 val myToast = Toast.makeText(this@MainActivity, "Current volume: $curVolume%", Toast.LENGTH_SHORT)
        //         myToast.show() //delete this Toast when interface is updated with current state.
                 timerParams.setVolume(curVolume)
-                // update slider!!!
-                //updateVolumeTextView()
                 VolumeSlider.changeVolumeSliderToCurrent(greyedVolseekBar)
-                TimerProgressBar.setProgress(((timerRunningParams.getLeftMills() - mTimer?.getProgress(timerRunningParams)!!)/1000).toInt())
+                TimerProgressBar.setProgress(((timerRunningParams.getLeftMills() - mTimer?.getProgress()!!)/1000).toInt())
             }
         })
     }
@@ -334,8 +301,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 Log.d("MainActivity ", "volume changed outside to " + newVolume + ", system volume " + curSystemVolume)
 
                 timerParams.setVolume(newVolume)//volume = newVolume
-                // update slider!!!
-                //updateVolumeTextView()
                 VolumeSlider.changeVolumeSliderToCurrent(greyedVolseekBar)
 
                 if (mTimer?.isRunning()!!) {
@@ -345,65 +310,38 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
                     if (newVolume > timerRunningParams.getVolume()) {
 
-                        timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress(timerRunningParams)!!)
-                        timerRunningParams.setLeftMills(mTimer?.getProgress(timerRunningParams)!!)
+                        timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress()!!)
+                        timerRunningParams.setLeftMills(mTimer?.getProgress()!!)
                         timerRunningParams.setStartParams() //startTime + startVolume
                         Log.d("MainActivity ", "recalculating")
                         val myToast = Toast.makeText(this@MainActivity, "Volume is changed, timer is recalculated", Toast.LENGTH_SHORT)
-
-                        /*
-                        mTimer?.cancelMainTimer()
-
-                        cancelCheckingProgress()
-                        timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress(timerRunningParams)!!)
-                        timerRunningParams.setLeftMills(mTimer?.getProgress(timerRunningParams)!!)
-                        Log.d("MainActivity ", "recalculating")
-                        val myToast = Toast.makeText(this@MainActivity, "Volume is changed, timer is recalculated", Toast.LENGTH_SHORT)
-                        mTimer?.startMainTimer(timerRunningParams)
-                        startCheckingProgress()
-                        */
-                    }
-                    else if (newVolume <= timerRunningParams.getVolume()){
-                        mTimer?.cancelMainTimer()
-                        cancelCheckingProgress()
-                        Log.d("MainActivity ", "cancelling")
-                        val myToast = Toast.makeText(this@MainActivity, "Volume is decreased, timer is cancelled", Toast.LENGTH_SHORT)
-                        TimerProgressBar.resetValues()
-                        updateMinutesTextView(timerParams.getSeconds())
                     }
                 }
                 updateTimerButtonImage()
             }
         })
-
     }
 
     fun startCheckingProgress(){
         timerProgress = Timer("Timer progress", false)
-
         timerProgress?.schedule(object : TimerTask() {
             override fun run() {
-
                 updateProgress()
-
                 }
             },  timerProgressPeriod.toLong(), timerProgressPeriod.toLong())
 
     }
 
     private fun updateProgress() {
-
         if (mTimer?.isRunning()!!){
 
             handlerProgress.post(object : Runnable{
                 override fun run() {
-                    var tmp = ((timerRunningParams.getLeftMills() - mTimer?.getProgress(timerRunningParams)!!)/1000).toInt()
+                    var tmp = ((timerRunningParams.getLeftMills() - mTimer?.getProgress()!!)/1000).toInt()
                     TimerProgressBar.setProgress(tmp)
-                    //circularProgressbar.progress = tmp
                     updateMinutesTextView(tmp)
                 }
             })
-
         }
     }
 

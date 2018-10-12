@@ -44,6 +44,10 @@ class TimerParameters (val Running : Boolean = false) {
         startVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
     }
 
+    fun setStartTime(){
+        startTime = System.currentTimeMillis()//Calendar.getInstance().timeInMillis //LocalDateTime.now()
+    }
+
     fun getStartTime(): Long{
         return startTime
     }

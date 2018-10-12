@@ -2,6 +2,7 @@ package com.bedtime_audio_timer.audiotimer
 
 import android.media.AudioManager
 import android.util.Log
+import com.bedtime_audio_timer.audiotimer.R.drawable.timer
 import java.util.*
 
 class MainTimer {
@@ -21,10 +22,11 @@ class MainTimer {
     var timer: Timer? = null //refers to the main timer for the application
     val subscribers = mutableListOf<TimerCallback>()
 
-/*  //moved to timertParams
+/*  //moved to timerParams
     var startTime: Long = 0//Calendar? = null
     var startVolume: Int = 0
 */
+    lateinit var params: TimerParameters
     var endTime: Long = 0//Calendar? = null
 
     fun isRunning(): Boolean {
@@ -39,6 +41,10 @@ class MainTimer {
         subscribers.remove(cb as TimerCallback)
     }
 
+    fun getParameters(): TimerParameters{
+        return params
+    }
+
     fun unsubscribeAll(){
         subscribers.clear()
     }
@@ -47,7 +53,8 @@ class MainTimer {
 //        val numIntervals: Int = AudioTimerMath.findNumIntervals(timerParams)
   //      val numMinutes=timerParams.getMinutes()
         timer = Timer("interval timer", false)
-        timerParams.setStartParams()
+        params = timerParams
+        params.setStartParams()
         /*
         //moved to timerParams
 
@@ -55,32 +62,32 @@ class MainTimer {
         startVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
         */
 
-        endTime = timerParams.getStartTime()
-        var nextVolume = timerParams.getStartVolume()
+        endTime = params.getStartTime()
+        var nextVolume = params.getStartVolume()
         //var currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 
         // formula: volume at any time of the timer
         // v = startVolume + (targetVolume - startVolume)/target minutes * t
 
-        Log.d("TIMER ", "start parameters: " + timerParams.getMillis().toString() + " " + timerParams.getVolume().toString())
+        Log.d("TIMER ", "start parameters: " + params.getMillis().toString() + " " + params.getVolume().toString())
 
         timer?.schedule(object : TimerTask() {
                 override fun run() {
 
                     val currentTime = System.currentTimeMillis()// Calendar.getInstance().timeInMillis
-                    val timePassed = currentTime - timerParams.getStartTime()
+                    val timePassed = currentTime - params.getStartTime()
                     val currentVolume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-                    nextVolume = (timerParams.getStartVolume() + (timerParams.getVolume() - timerParams.getStartVolume()).toDouble()/timerParams.getMillis().toDouble() * timePassed).toInt()
+                    nextVolume = (params.getStartVolume() + (params.getVolume() - params.getStartVolume()).toDouble()/params.getMillis().toDouble() * timePassed + 1).toInt()
 
-                    if ((nextVolume < timerParams.getVolume())||(timerParams.getMillis() < 0)){
-                        nextVolume = timerParams.getVolume()
+                    if ((nextVolume < params.getVolume())||(params.getMillis() < 0)){
+                        nextVolume = params.getVolume()
                         Log.d("TIMER ", "last volume " + nextVolume.toString())
                     }
 
 
-                    if((nextVolume < currentVolume) /*&& (nextVolume >= timerParams.getVolume())*/){
-                        Log.d("TIMER ", "change volume from " + currentVolume.toString() + " to: " + nextVolume.toString() + "  " + timePassed.toString() + " time left " + (timerParams.getMillis()-timePassed).toString() )
+                    if((nextVolume < currentVolume) /*&& (nextVolume >= params.getVolume())*/){
+                        Log.d("TIMER ", "change volume from " + currentVolume.toString() + " to: " + nextVolume.toString() + "  " + timePassed.toString() + " time left " + (params.getMillis()-timePassed).toString() )
                         //currentVolume = nextVolume
                         if (subscribers.any()){
                             for (sub in subscribers){
@@ -90,7 +97,7 @@ class MainTimer {
                         AudioManagerSingleton.am.setVolume(nextVolume)
                     }
 
-                    if (timePassed >= timerParams.getMillis()) { // if time is over or current system volume is
+                    if ((timePassed >= params.getMillis()) || (params.getVolume() >= nextVolume)) {
                         Log.d("TIMER ", "cancel with volume " + AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC).toString() + " and time passed " + timePassed.toString())
 
                         cancelMainTimer()
@@ -102,48 +109,21 @@ class MainTimer {
                         }
                     }
                 }
-        },  1000, 1000)
-
-/*        timer?.schedule(object : TimerTask() {
-            override fun run() {
-                AudioManagerSingleton.am.setVolume(nextVolume)
-                if (subscribers.any() == true){
-                    for (sub in subscribers){
-                        sub.onVolumeChange(nextVolume)
-                    }
-                }
-
-
-                nextVolume -= 1
-                interval += 1
-                if (interval > numIntervals) {
-                    cancelMainTimer()
-
-                    if (subscribers.any() == true) {
-                        for (sub in subscribers) {
-                            sub.onTimerFinished()
-                        }
-                    }
-                }
-            }
-        },  intervalLength, intervalLength)
-*/
+        },  100, 100)
     }
 
     fun cancelMainTimer(){
         endTime = System.currentTimeMillis()
-        timer?.cancel() //the ? is the safe call operator in Kotlin
+        timer?.cancel()
         timer = null
-        VolumeSlider.resetAfterTimerCancel()
-        //Log.d("TIMER ", "progress: " + getProgress().toString())
     }
 
-    fun getProgress(timerParams: TimerParameters): Long{
+    fun getProgress(): Long{
         if(isRunning()){
-            return System.currentTimeMillis() - timerParams.getStartTime()
+            return System.currentTimeMillis() - params.getStartTime()
         }
         else {
-            return endTime - timerParams.getStartTime()
+            return endTime - params.getStartTime()
         }
     }
 }
