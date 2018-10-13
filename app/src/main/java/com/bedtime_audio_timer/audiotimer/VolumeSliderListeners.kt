@@ -54,6 +54,13 @@ class VolumeSliderListeners {
                     }
                     if (greyedVolSeekBar.progress!=oldVolSeekBar.progress){
                         VolumeSlider.greyedVolSeekBar.setVisibility(View.VISIBLE)
+                        if (greyedVolSeekBar.progress!=oldVolSeekBar.progress){
+                            VolumeSlider.greyedVolSeekBar.setVisibility(View.VISIBLE)
+                            if (greyedVolSeekBar.progress>oldVolSeekBar.progress){
+                                oldVolSeekBar.progress=greyedVolSeekBar.progress
+                                greyedVolSeekBar.setVisibility(View.INVISIBLE)
+                            }
+                        }
                     }
                 }
                 override fun onStartTrackingTouch(volSeekBar: SeekBar) {
