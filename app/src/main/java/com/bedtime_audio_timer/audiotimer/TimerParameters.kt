@@ -18,7 +18,7 @@ class TimerParameters (val Running : Boolean = false) {
 
     fun loadInitialSetting(){ // now it show current volume, but later presets can be loaded from file
         volume = AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)//AudioTimerMath.percentageToMultipleOfIncrement(AudioTimerMath.currentVolumeToPercentage(), volumeIncrement)
-        millis = 5 * 60000
+        millis = 60000//5 * 60000
     }
 
     fun loadFromBundle(state: Bundle){ // to restore the values when activity is recreated after configuration change
