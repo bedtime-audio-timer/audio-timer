@@ -362,11 +362,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
 
     fun fullReset(){ //timer is finished or cancelled
         cancelCheckingProgress()
-        updateTimerButtonImage()
-        updateMinutesTextView(timerParams.getSeconds())
         TimerProgressBar.resetValues()
         VolumeSlider.resetAfterTimerCancel()
         VolumeSlider.realignMoons()
-        VolumeSlider.resetAfterTimerCancel()
+        updateTimerButtonImage()
+        updateMinutesTextView(timerParams.getSeconds())
     }
 }
