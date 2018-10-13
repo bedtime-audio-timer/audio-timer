@@ -12,144 +12,244 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.36" />
-
-    <TextView
-        android:id="@+id/volumeLabelText"
-        style="@style/LabelText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/VolumeLable"
-        app:layout_constraintBottom_toTopOf="@+id/textVolume"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/timerLabelText"
-        style="@style/LabelText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/TimerLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-    <TextView
-        android:id="@+id/textVolume"
-        style="@style/ValueText"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintGuide_percent="0.62" />
 
     <TextView
         android:id="@+id/textTimer"
         style="@style/ValueText"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_width="222dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:gravity="end"
         android:text="00:50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        android:textAlignment="textEnd"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toBottomOf="@+id/circularProgressbar"
+        app:layout_constraintEnd_toStartOf="@+id/textSeconds"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timerLabelText" />
+        app:layout_constraintTop_toTopOf="@+id/circularProgressbar" />
 
     <ImageView
         android:id="@+id/imgVolume"
-        android:layout_width="72dp"
+        android:layout_width="71dp"
         android:layout_height="72dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:contentDescription="Volume"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/textVolume"
+        app:layout_constraintBottom_toBottomOf="@+id/targetVolSeekBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/targetVolSeekBar"
         app:srcCompat="@drawable/volume_med" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="68dp"
-        android:contentDescription="Timer"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toStartOf="@+id/textTimer"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:srcCompat="@drawable/timer" />
-
-    <ImageButton
-        android:id="@+id/imgBtnVolumeUp"
-        style="@style/UpArrowButton"
-        android:layout_marginBottom="4dp"
-        android:contentDescription="Increase Volume"
-        android:onClick="increaseVolume"
-        app:layout_constraintBottom_toTopOf="@+id/imgBtnVolumeDown"
-        app:layout_constraintStart_toEndOf="@+id/textVolume"
-        app:srcCompat="@android:drawable/arrow_up_float" />
-
-    <ImageButton
-        android:id="@+id/imgBtnVolumeDown"
-        style="@style/DownArrowButton"
-        android:contentDescription="Decrease Volume"
-        android:onClick="decreaseVolume"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toEndOf="@+id/textVolume"
-        app:srcCompat="@android:drawable/arrow_down_float" />
 
     <ImageButton
         android:id="@+id/imgBtnTimerUp"
         style="@style/UpArrowButton"
-        android:layout_marginTop="68dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="Increase Minutes"
         android:onClick="increaseMinutes"
-        app:layout_constraintStart_toEndOf="@+id/textTimer"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/textTimer"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/circularProgressbar"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@android:drawable/arrow_up_float" />
 
     <ImageButton
         android:id="@+id/imgBtnTimerDown"
         style="@style/DownArrowButton"
+        android:layout_marginBottom="92dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:contentDescription="Decrease Minutes"
         android:onClick="decreaseMinutes"
-        app:layout_constraintStart_toEndOf="@+id/textTimer"
-        app:layout_constraintTop_toBottomOf="@+id/imgBtnTimerUp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/textMinutesFormat"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageButton
+        android:id="@+id/imgBtnHoursUp"
+        style="@style/UpArrowButton"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="Increase Hours"
+        android:onClick="increaseHours"
+        app:layout_constraintBottom_toTopOf="@+id/textTimer"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/circularProgressbar"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageButton
+        android:id="@+id/imgBtnHoursDown"
+        style="@style/DownArrowButton"
+        android:layout_marginBottom="92dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:contentDescription="Decrease Hours"
+        android:onClick="decreaseHours"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/textHoursFormat"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/arrow_down_float" />
 
     <ImageButton
         android:id="@+id/btnMain"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="133dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="1dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="1dp"
         android:layout_marginTop="8dp"
         android:background="#00000000"
         android:contentDescription="Start/Stop Timer"
         android:onClick="toggleTimer"
         android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/targetVolSeekBar"
+        app:layout_constraintVertical_bias="0.416"
+        app:srcCompat="@drawable/start_word1" />
+
+
+    <SeekBar
+        android:id="@+id/greyedVolseekBar"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
+        android:progressBackgroundTint="@color/sliderBackground"
+        android:progressTint="@color/greyedOut"
+        android:thumb="@drawable/halfmoon"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgVolume"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.206" />
+
+    <SeekBar
+        android:id="@+id/originalVolseekBar"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
+        android:progressBackgroundTint="@color/sliderBackground"
+        android:progressTint="@color/greyedOut"
+        android:thumb="@drawable/fullmoon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgVolume"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.206" />
+
+    <SeekBar
+        android:id="@+id/targetVolSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
+        android:progressBackgroundTint="@color/sliderBackground"
+        android:progressTint="@color/colorPrimary"
+        android:thumb="@drawable/crescentmoon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgVolume"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.206" />
+
+    <ProgressBar
+
+        android:id="@+id/circularProgressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="366dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="50"
+        android:progressDrawable="@drawable/circular"
+        android:secondaryProgress="100"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textHoursFormat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:text=" hh"
+        android:textColor="@color/colorValue"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textTimer"
-        app:srcCompat="@drawable/start" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textMinutesFormat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:text="mm"
+        android:textColor="@color/colorValue"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/textHoursFormat"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textSeconds"
+        style="@style/ValueText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:layout_marginStart="64dp"
+        android:gravity="start"
+        android:text="39"
+        android:textAlignment="textStart"
+        android:textSize="25sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textTimer"
+        app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.48" />
+
 </android.support.constraint.ConstraintLayout>

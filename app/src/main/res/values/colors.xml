@@ -6,11 +6,12 @@
     <color name="colorPrimary">#e18c2c</color>
     <color name="colorPrimaryDark">#50525c</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="sliderBackground">#FFFFFF</color>
     <color name="colorButton">#ebc441</color>
     <color name="colorButtonBackground">#524c45</color>
     <color name="colorBackground">#242a35</color>
     <color name="colorTitle">#ffab40</color>
     <color name="colorValue">#FFAAAAAA</color>
-
+    <color name="greyedOut">#705131</color>
+    <color name="original">#000000</color>
 </resources>
