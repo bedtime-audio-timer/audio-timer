@@ -246,12 +246,10 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             updateProgress()
             updateMinutesTextView(timerParams.getSeconds())*/
             Log.d("MainActivity ", "I will cancel")
-            Log.d("Check", "1")
 
         } else if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) <= timerParams.getVolume()){  // Move to MainTimer!!!
             val myToast = Toast.makeText(this, "Nothing to change", Toast.LENGTH_SHORT)
             myToast.show() //delete this Toast when interface makes cancellation clear.
-            Log.d("Check", "2")
         }
         else
         {
@@ -259,10 +257,8 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             TimerProgressBar.setMaxValues((timerRunningParams.getMillis()/1000).toInt())
             mTimer?.startMainTimer(timerRunningParams)
             startCheckingProgress()
-            Log.d("Check", "3")
         }
         updateTimerButtonImage()
-        Log.d("Check", "4")
     }
 
     override fun onTimerFinished() {
@@ -278,7 +274,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 TimerProgressBar.resetValues()
                 VolumeSlider.resetAfterTimerCancel()
 */
-                Log.d("Check", "6")
             }
         })
     }
@@ -293,7 +288,6 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 timerParams.setVolume(curVolume)
                 VolumeSlider.changeVolumeSliderToCurrent(greyedVolseekBar)
                 TimerProgressBar.setProgress(((timerRunningParams.getLeftMills() - mTimer?.getProgress()!!)/1000).toInt())
-                Log.d("Check", "7")
             }
         })
     }
@@ -315,19 +309,15 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                     //  if volume is increased: recalculate timer by default, remind user they can cancel timer
                     //  if volume is decreased but higher then target: recalculate timer by default, remind user they can cancel timer
                     Log.d("MainActivity ", "timer is running")
-                    Log.d("Check", "8")
                     if (newVolume > timerRunningParams.getVolume()) {
-
                         timerRunningParams.setMillis(timerRunningParams.getMillis() - mTimer?.getProgress()!!)
                         timerRunningParams.setLeftMills(mTimer?.getProgress()!!)
                         timerRunningParams.setStartParams() //startTime + startVolume
                         Log.d("MainActivity ", "recalculating")
                         val myToast = Toast.makeText(this@MainActivity, "Volume is changed, timer is recalculated", Toast.LENGTH_SHORT)
-                        Log.d("Check", "9")
                     }
                 }
                 updateTimerButtonImage()
-                Log.d("Check", "10")
             }
         })
     }

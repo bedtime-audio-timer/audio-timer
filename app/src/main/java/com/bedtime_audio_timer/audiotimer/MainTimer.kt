@@ -84,23 +84,20 @@ class MainTimer {
                             }
                         }
                         AudioManagerSingleton.am.setVolume(nextVolume)
-                        Log.d("Check", "11")
                     }
 
                     if ((timePassed >= params.getMillis()) || (params.getVolume() >= nextVolume)) {
                         Log.d("TIMER ", "cancel with volume " + AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC).toString() + " and nextVolume " + nextVolume.toString() +  " and time passed " + timePassed.toString())
 
                         cancelMainTimer()
-                        Log.d("Check", "12")
                         if (subscribers.any()) {
                             for (sub in subscribers) {
                                 sub.onTimerFinished()
-                                Log.d("Check", "13")
                             }
                         }
                     }
                 }
-        },  100, 100)
+        },  1000, 1000)
     }
 
     fun cancelMainTimer(){
