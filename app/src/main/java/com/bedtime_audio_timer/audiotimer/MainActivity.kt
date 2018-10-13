@@ -237,8 +237,8 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
         VolumeSlider.realignMoons()
         VolumeSlider.resetAfterTimerCancel()
         if (mTimer?.isRunning()!!) {
-            val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
-            myToast.show() //delete this Toast when interface makes cancellation clear.
+//            val myToast = Toast.makeText(this, "I will cancel", Toast.LENGTH_SHORT)
+//            myToast.show() //delete this Toast when interface makes cancellation clear.
             mTimer?.cancelMainTimer()
             fullReset()
 /*            cancelCheckingProgress()
@@ -248,8 +248,8 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             Log.d("MainActivity ", "I will cancel")
 
         } else if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) <= timerParams.getVolume()){  // Move to MainTimer!!!
-            val myToast = Toast.makeText(this, "Nothing to change", Toast.LENGTH_SHORT)
-            myToast.show() //delete this Toast when interface makes cancellation clear.
+            val myToast = Toast.makeText(this, "Please pick a lower target volume", Toast.LENGTH_SHORT)
+            myToast.show()
         }
         else
         {
@@ -264,7 +264,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
     override fun onTimerFinished() {
         handler.post(object : Runnable {
             override fun run() {
-                val myToast = Toast.makeText(this@MainActivity, "Timer is finished!", Toast.LENGTH_SHORT)
+                val myToast = Toast.makeText(this@MainActivity, "Timer is finished", Toast.LENGTH_SHORT)
                 myToast.show() //delete this Toast when interface another message about finished timer pops up.
                 fullReset()
 /*                updateTimerButtonImage()
