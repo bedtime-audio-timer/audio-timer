@@ -17,6 +17,10 @@ class VolumeSlider{
         lateinit var timerParams: TimerParameters
 
         fun realignMoons(){
+            val curVol=AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)
+            if (greyedVolSeekBar.progress!=curVol){
+                greyedVolSeekBar.progress=curVol
+            }
             oldVolSeekBar.progress = greyedVolSeekBar.progress
             greyedVolSeekBar.setVisibility(View.INVISIBLE)
         }
