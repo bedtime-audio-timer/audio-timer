@@ -248,7 +248,13 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             Log.d("MainActivity ", "I will cancel")
 
         } else if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) <= timerParams.getVolume()){  // Move to MainTimer!!!
-            val myToast = Toast.makeText(this, "Please pick a lower target volume", Toast.LENGTH_SHORT)
+            val targetVolumeErrorMessage : String
+            if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)==0){
+                targetVolumeErrorMessage="Your phone is already hushed"
+            } else {
+                targetVolumeErrorMessage="Please pick a lower target volume"
+            }
+            val myToast=Toast.makeText(this, targetVolumeErrorMessage, Toast.LENGTH_SHORT)
             myToast.show()
         }
         else
