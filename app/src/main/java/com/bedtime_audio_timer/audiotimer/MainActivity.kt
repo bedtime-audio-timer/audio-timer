@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
@@ -248,7 +249,14 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
             Log.d("MainActivity ", "I will cancel")
 
         } else if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC) <= timerParams.getVolume()){  // Move to MainTimer!!!
-            val myToast = Toast.makeText(this, "Please pick a lower target volume", Toast.LENGTH_SHORT)
+            val targetVolumeErrorMessage : String
+            if (AudioManagerSingleton.am.getStreamVolume(AudioManager.STREAM_MUSIC)==0){
+                targetVolumeErrorMessage="Your phone is already hushed"
+            } else {
+                targetVolumeErrorMessage="Please pick a lower target volume"
+            }
+            val myToast=Toast.makeText(this, targetVolumeErrorMessage, Toast.LENGTH_SHORT)
+            myToast.setGravity(Gravity.CENTER,0,0)
             myToast.show()
         }
         else
