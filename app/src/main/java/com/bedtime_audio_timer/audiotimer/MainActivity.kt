@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
@@ -255,6 +256,7 @@ class MainActivity : AppCompatActivity(), MainTimer.TimerCallback, OutsideVolume
                 targetVolumeErrorMessage="Please pick a lower target volume"
             }
             val myToast=Toast.makeText(this, targetVolumeErrorMessage, Toast.LENGTH_SHORT)
+            myToast.setGravity(Gravity.CENTER,0,0)
             myToast.show()
         }
         else
