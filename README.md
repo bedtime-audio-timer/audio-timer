@@ -13,7 +13,9 @@ Please [try out our app](https://play.google.com/store/apps/details?id=com.bedti
 ## Contributors
 
 [Kate](http://github.com/katekourbatova) - 50% project manager, 25% developer, 25% user experience researcher and designer
+
 [Willa](http://github.com/willa-danielle) - 75% developer, 25% designer
+
 [Yulia](http://github.com/sjullieb) - 75% developer, 25% designer
 
 This is our first project using Kotlin, and first experience with mobile development! We welcome your feedback and feature suggestions.
