@@ -1,2 +1,4 @@
-# audio-timer
-Bedtime audio timer app for She's Coding Summer Hackathon
+# Hush -- audio-timer
+Bedtime audio timer app for She's Coding Summer Codeathon
+
+Hush is an android app designed for users who like to fall asleep with audio media but do not want that same audio to wake them up later.  By reducing the volume over a user defined period of time, Hush accounts for the fact that the surrounding environment will generally grow quieter over the course of the evening.  (The difference between a sudden sound's volume and that of the background noise is what generally determines if a sound is loud enough to wake someone).  The app UI is high contrast to facilitate accessibility for both color blind people and sleepy people.  The UI as it currently stands consists of a circular progress bar and timer display, with timer set by large tappable arrows, a slider in the shape of a crescent-phase moon for target volume, indicators for original volume and current volume (full and half moons, translucent), and a start button.  There is also a welcome activity introducing the app and what it does.
