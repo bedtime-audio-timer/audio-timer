@@ -127,7 +127,7 @@ class TimerParameters (val Running : Boolean = false) {
             millis -= minutesIncrement * 60000 * 60
         }
         else if (millis < 60000 * 60) {
-            // have to leave this espression empty, as it doesn't allow to check (millis == 60000 * 60)
+            // leaving this expression empty, as it doesn't allow to check (millis == 60000 * 60)
         }
         else { // millis = 60000 * 60 = 1 hour -> 59 sec
             millis -= minutesIncrement * 60000
