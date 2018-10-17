@@ -126,6 +126,12 @@ class TimerParameters (val Running : Boolean = false) {
         if (millis > 60000 * 60) {
             millis -= minutesIncrement * 60000 * 60
         }
+        else if (millis < 60000 * 60) {
+            // have to leave this espression empty, as it doesn't allow to check (millis == 60000 * 60)
+        }
+        else { // millis = 60000 * 60 = 1 hour -> 59 sec
+            millis -= minutesIncrement * 60000
+        }
     }
 
     fun setVolume(vol: Int){
